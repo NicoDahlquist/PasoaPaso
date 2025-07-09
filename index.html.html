@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Brújula Estadística</title>
+    <style>
+        /* --- ESTILOS GENERALES Y FUENTES --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+
+        :root {
+            --primary-color: #005A9C;
+            --secondary-color: #00A9E0;
+            --accent-green: #27AE60;
+            --accent-orange: #E67E22;
+            --accent-yellow: #e4c643;
+            --light-bg: #F4F7F6;
+            --text-color: #34495E;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--white);
+        }
+
+        /* --- TÍTULOS Y TEXTO --- */
+        h1 { font-size: 2.2em; font-weight: 800; text-align: center; color: var(--primary-color); margin-bottom: 0.2em; }
+        h2.subtitle { font-size: 1.1em; font-weight: 600; text-align: center; color: var(--secondary-color); margin-top: 0; margin-bottom: 30px; }
+        h3 { font-size: 1.6em; font-weight: 700; text-align: center; color: var(--primary-color); margin-top: 50px; margin-bottom: 20px; }
+        p.intro { font-size: 1.1em; text-align: center; max-width: 700px; margin: 0 auto 40px auto; }
+
+        /* --- NUEVA SECCIÓN EXPLICATIVA: DISCRETA VS CONTINUA --- */
+        .explanation-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* una sola columna */
+            gap: 1rem; /* espacio entre los elementos */
+        }
+        .explanation-card {
+            background: var(--light-bg); padding: 20px; border-radius: 12px;
+            border-top: 5px solid;
+        }
+        .explanation-card h4 { margin: 0 0 15px 0; font-size: 1.3em; font-weight: 700; }
+        .explanation-card p { margin: 0 0 15px 0; font-size: 0.95em; }
+        .explanation-card .trick { font-style: italic; background-color: #fff; padding: 10px; border-radius: 8px; font-size: 0.9em; }
+        .discrete-card { border-color: var(--accent-green); } .discrete-card h4 { color: var(--accent-green); }
+        .continuous-card { border-color: var(--accent-orange); } .continuous-card h4 { color: var(--accent-orange); }
+
+
+        /* --- ESTILOS DEL DIAGRAMA --- */
+        .diagram { text-align: center; }
+        .branch-container { display: flex; justify-content: space-around; align-items: flex-start; gap: 20px; margin-top: 30px; }
+        .branch { flex: 1; padding: 15px; }
+        .branch h4 { font-size: 1.5em; font-weight: 800; margin-top: 0; padding-bottom: 10px; border-bottom: 3px solid; margin-bottom: 25px; }
+        .branch.discrete h4 { color: var(--accent-green); border-color: var(--accent-green); }
+        .branch.continuous h4 { color: var(--accent-orange); border-color: var(--accent-orange); }
+        .node { padding: 15px 20px; margin: 20px auto; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #ddd; position: relative; }
+        .node::after { content: '↓'; font-size: 2em; color: var(--secondary-color); font-weight: bold; display: block; margin-top: 15px; }
+        .question-node { background-color: var(--white); font-style: italic; border-left: 4px solid var(--secondary-color); }
+        .answer-node { background-color: var(--accent-yellow); color: #333; border: 2px solid #E0B40A; font-weight: 700; text-transform: uppercase; }
+        .answer-node::after { content: ''; }
+
+        /* --- SECCIÓN DE EJEMPLOS --- */
+        .examples-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .example-card { background: var(--light-bg); padding: 20px; border-radius: 12px; border-left: 5px solid; }
+        .example-card h5 { margin: 0 0 10px 0; font-size: 1.1em; font-weight: 700; }
+        .example-card p, .example-card ul { margin: 0; font-size: 0.9em; padding-left: 20px; }
+        
+        .card-binomial, .card-hipergeometrica, .card-poisson { border-color: var(--accent-green); }
+        .card-binomial h5, .card-hipergeometrica h5, .card-poisson h5 { color: var(--accent-green); }
+        .card-exponencial, .card-uniforme, .card-normal { border-color: var(--accent-orange); }
+        .card-exponencial h5, .card-uniforme h5, .card-normal h5 { color: var(--accent-orange); }
+
+        /* --- ELEMENTOS ESTRATÉGICOS --- */
+        .secret-box { margin: 50px auto; padding: 25px; background-color: #fffbeb; border: 2px solid #fde081; border-radius: 12px; max-width: 750px; }
+        .secret-box h4 { font-size: 1.2em; font-weight: 700; margin: 0 0 15px 0; color: #D9822B; }
+        .secret-box ul { padding-left: 20px; margin: 0; }
+        .secret-box li { margin-bottom: 10px; }
+        
+        .cta-box { margin-top: 40px; padding: 25px; text-align: center; background: linear-gradient(45deg, #005A9C, #004070); border-radius: 12px; color: var(--white); }
+        .cta-box h4 { font-size: 1.4em; font-weight: 700; margin: 0 0 10px 0; }
+        .cta-box p.whatsapp-cta { margin-top: 20px; font-size: 0.9em; opacity: 0.9; }
+        .cta-box a { color: var(--white); font-weight: bold; }
+
+        /* --- RESPONSIVE Y PRINT --- */
+        @media (max-width: 768px) {
+            .container { padding: 15px; margin: 0; }
+            h1 { font-size: 1.8em; } h2.subtitle { font-size: 1em; }
+            .explanation-grid, .branch-container { flex-direction: column; gap: 20px; }
+            .branch { padding: 0; }
+        }
+        @media print {
+            body { background-color: var(--white); }
+            .container { box-shadow: none; margin: 0; padding: 0; max-width: 100%;}
+            @page { margin: 1cm; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- TÍTULO OPTIMIZADO -->
+        <h1>La Brújula Estadística</h1>
+        <h2 class="subtitle">Tu Guía para Nunca Más Perderte entre Distribuciones</h2>
+
+        <!-- INTRODUCCIÓN CORTA -->
+        <p class="intro">
+            ¿Leés un problema y no sabés por dónde empezar? Tranqui. Esta brújula es tu herramienta para elegir el camino correcto sin dudar.
+        </p>
+        
+        <!-- NUEVA SECCIÓN: EL PRIMER PASO -->
+        <h3>El Punto de Partida: ¿Tu Variable se Cuenta o se Mide?</h3>
+        <p style="text-align:center; max-width:700px; margin: 0 auto 30px auto;">Antes de mirar cualquier fórmula, tenés que tener esto clarísimo. Es la decisión más importante y la que te pone en el camino correcto desde el principio.</p>
+        
+        <div class="explanation-grid">
+            <div class="explanation-card discrete-card">
+                <h4>DISCRETA (Se Cuenta)</h4>
+                <p>Son valores que podés contar de a uno, con los dedos. No existen valores intermedios. La pregunta clave es: <strong>"¿Cuántos hay?"</strong></p>
+                <p class="trick"><strong>El truco:</strong> ¿Puede tener decimales? Si la respuesta es NO (ej: no podés tener 2.5 llamadas), entonces es DISCRETA.</p>
+            </div>
+            <div class="explanation-card continuous-card">
+                <h4>CONTINUA (Se Mide)</h4>
+                <p>Son valores que necesitás un instrumento para medir (reloj, balanza, metro). Siempre puede haber un valor en el medio. La pregunta clave es: <strong>"¿Cuánto mide/pesa/dura?"</strong></p>
+                <p class="trick"><strong>El truco:</strong> ¿Puede tener decimales? Si la respuesta es SÍ (ej: podés esperar 7.5 minutos), entonces es CONTINUA.</p>
+            </div>
+        </div>
+
+
+        <h3>¿Y ahora?</h3>
+        <div class="diagram">
+            <div class="branch-container">
+                <div class="branch discrete">
+                    <h4>Si es DISCRETA...</h4>
+                    <div class="node question-node">¿Hay un n° fijo de intentos y solo dos resultados posibles (éxito/fracaso)?</div>
+                    <div class="node answer-node">Binomial</div>
+                    <div class="node question-node">¿Te habla de algo que sucede cada un tiempo o cada tantos metros en específico?</div>
+                    <div class="node answer-node">Poisson</div>
+                    <div class="node question-node">¿Es <strong>SIN REPOSICIÓN</strong>? Es decir, ¿Luego de un seceso, cambia la probabilidad para cuando vuelva a pasar? <br> Y, sobre todo, ¿Nos dan varios valores ENTEROS en el enunciado?</div>
+                    <div class="node answer-node">Hipergeométrica</div>
+                </div>
+                <div class="branch continuous">
+                    <h4>Si es CONTINUA...</h4>
+                    <div class="node question-node">¿Dice específicamente "distribución normal"? ¿Te dan promedio/media (μ) y desvío (σ)?</div>
+                    <div class="node answer-node">Normal</div>
+                    <div class="node question-node">¿Todos los resultados en un rango de números (ej: entre 2 y 5) valen lo mismo?</div>
+                    <div class="node answer-node">Uniforme</div>
+                    <div class="node question-node">¿Mide el tiempo HASTA que algo sucede por primera vez?</div>
+                    <div class="node answer-node">Exponencial</div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Bajando la Brújula a Tierra: Ejemplos Reales</h3>
+        <div class="examples-grid">
+            <div class="example-card card-binomial"><h5>BINOMIAL</h5><p>"Lanzás una moneda 10 veces. ¿Probabilidad de que salgan 3 caras?"</p><ul><li><strong>Claves:</strong> n° de intentos fijo (10), probabilidad de éxito constante.</li></ul></div>
+            <div class="example-card card-hipergeometrica"><h5>HIPERGEOMÉTRICA</h5><p>"En una caja con 5 remeras falladas y 15 buenas, sacás 4. ¿Probabilidad de sacar 1 fallada?"</p><ul><li><strong>Claves:</strong> ¡Sin reposición! La población total (20) y la muestra (4) son claves.</li></ul></div>
+            <div class="example-card card-poisson"><h5>POISSON</h5><p>"Si a una guardia llegan 3 pacientes por hora en promedio, ¿probabilidad de que lleguen 5 en la próxima hora?"</p><ul><li><strong>Claves:</strong> Promedio de ocurrencias en un intervalo.</li></ul></div>
+            <div class="example-card card-exponencial"><h5>EXPONENCIAL</h5><p>"Si el tiempo entre cada colectivo es, en promedio, 10 minutos, ¿probabilidad de esperar más de 15?"</p><ul><li><strong>Claves:</strong> Mide el tiempo entre eventos.</li></ul></div>
+            <div class="example-card card-uniforme"><h5>UNIFORME</h5><p>"Un programa tarda entre 2 y 4 segundos en ejecutarse. ¿Probabilidad de que tarde menos de 2.5s?"</p><ul><li><strong>Claves:</strong> Te dan un rango [a, b] donde todo es igual de probable.</li></ul></div>
+            <div class="example-card card-normal"><h5>NORMAL</h5><p>"Las notas de un examen siguen una distribución normal con media 6 y desvío 1.5."</p><ul><li><strong>Claves:</strong> Siempre te darán la media y el desvío. Es la más común.</li></ul></div>
+        </div>
+
+    <div class="secret-box">
+        <h4>🔥 EL DATO QUE VALE ORO (Secreto de Cátedra)</h4>
+        <p>A veces, ninguna de las cajitas de arriba parece encajar perfecto... <strong>¡No entres en pánico!</strong> Puede que sea un caso de <strong>Aproximación a la Normal</strong>. Este truco, que enseñaremos más adelante, es uno de los tantos que te salvarán en los finales.</p>
+    <ul>
+        <li><strong>Binomial vs. Hipergeométrica:</strong> La palabra mágica es <strong>"SIN reposición"</strong>. Pero si el enunciado no lo dice explícitamente, hay otra pista: ¿te dan el total de la población (N) y el tamaño de la muestra (n)? Entonces, muy probablemente, es Hipergeométrica.
+        <br><em>🔥 Tip dorado:</em> Si hay pocos elementos y cada vez que sacás uno el contexto cambia (como elegir sin devolver), casi seguro es Hipergeométrica. Si la probabilidad se mantiene constante, va por Binomial.</li>
+
+        <li><strong>Poisson vs. Exponencial:</strong> Son dos caras de la misma moneda. Si el ejercicio te pide cuántas veces ocurre algo en un intervalo (ej: llamadas por hora), es <strong>Poisson</strong>. Pero si pregunta cuánto tiempo hay que esperar hasta que ocurra algo (ej: tiempo hasta la próxima llamada), es <strong>Exponencial</strong>.
+        <br><em>🔥 Tip dorado:</em> Pensalo así: Poisson cuenta cosas, Exponencial mide esperas.</li>
+    </ul>
+        <p><em>En nuestra <strong>CLASE GRATIS de mañana</strong> veremos ejemplos reales de estas trampas. En nuestro método "Estadística Paso a Paso" tenemos un módulo entero llamado "El Arsenal Anti-Trampas", donde analizamos los patrones de los últimos finales. <strong> No te preparamos solo para rendir: nos metemos en la cabeza de los profes que arman el examen para dominar sus trucos.</strong></em></p>
+    </div>
+
+        <div class="cta-box">
+            <h4>Tu Misión para la Clase de Mañana</h4>
+            <p>Elige UN ejercicio de la guía que te haya trabado. Intentá resolverlo con esta Brújula. Tráelo a la clase. Vamos a resolver los casos más interesantes EN VIVO y, no solo eso, también vamos a hablar sobre lo que tenés que saber SÍ O SÍ para aprobar esta materia. <br> Al final habrá un espacio de preguntas sobre lo que quieran solo para quienes se queden hasta el final.</p>
+            <p class="whatsapp-cta">Si te perdiste la clase, te interesa saber más, querés sacarte dudas, consultar por otra materia o lo que sea, escribinos sin miedo al whatsapp <a href="https://wa.me/5493541315608">+54 9 3541 31-5608</a>.</p>
+        </div>
+    </div>
+
+</body>
+</html>
