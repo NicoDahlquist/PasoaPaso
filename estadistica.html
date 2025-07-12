@@ -24,47 +24,23 @@
             transition: transform 0.3s ease-in-out;
         }
 
-        /* --- Estilos del Placeholder de Video --- */
+        /* --- Estilos del Contenedor de Video de YouTube --- */
         .video-container {
             margin-top: 25px;
             position: relative;
-            padding-bottom: 56.25%;
+            padding-bottom: 56.25%; /* Proporción 16:9 para el video */
             height: 0;
             overflow: hidden;
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            cursor: pointer;
-            background: url('https://via.placeholder.com/800x450/cccccc/000000?text=Haz+clic+para+reproducir') center center / cover;
         }
-        .video-container .play-button {
+        .video-container iframe {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.3s;
-        }
-        .video-container:hover .play-button {
-            background-color: rgba(118, 75, 162, 0.8);
-        }
-        .play-button::after {
-            content: '';
-            display: block;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 15px 0 15px 25px;
-            border-color: transparent transparent transparent white;
-            margin-left: 5px;
-        }
-        .video-container video {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0; /* Asegura que no haya un borde no deseado */
         }
 
         /* --- Estilos de la Sección de Testimonios --- */
@@ -235,9 +211,17 @@
             Nos especializamos en tus materias (sabemos cómo te evalúan), <strong>SOLO elegimos buenos profes</strong>
             (explican fácil lo difícil).</p>
 
-        <div class="video-container" id="video-placeholder">
-            <div class="play-button"></div>
+        <!-- ▼▼▼ SECCIÓN DE VIDEO MODIFICADA ▼▼▼ -->
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/TU_ID_DE_YOUTUBE?rel=0&modestbranding=1"
+                title="Video de YouTube insertado"
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
         </div>
+        <!-- ▲▲▲ FIN DE LA SECCIÓN DE VIDEO MODIFICADA ▲▲▲ -->
     </header>
 
     <!-- =========== TÍTULO FINAL (EL MEJOR) =========== -->
@@ -426,9 +410,9 @@
         <h2>Lo que dicen nuestros alumnos</h2>
         <div class="testimonial-grid">
             <!-- Reemplaza estas URLs con las de tus capturas -->
-            <img src="https://via.placeholder.com/300x500/ffffff/000000?text=¡Aprobé,+gracias!" alt="Testimonio de alumno 1">
-            <img src="https://via.placeholder.com/300x500/ffffff/000000?text=¡El+mejor+profe!" alt="Testimonio de alumno 2">
-            <img src="https://via.placeholder.com/300x500/ffffff/000000?text=Me+salvaron+la+materia" alt="Testimonio de alumno 3">
+            <img src="imagen1.png" alt="Testimonio de alumno 1">
+            <img src="imagen2.png" alt="Testimonio de alumno 2">
+            <img src="imagen3.png" alt="Testimonio de alumno 3">
         </div>
     </section>
 
@@ -437,7 +421,7 @@
 <!-- =========== ESTRUCTURA DEL MODAL (oculto por defecto) =========== -->
 <div class="modal-overlay" id="modal">
     <div class="modal-container">
-        <span class="modal-close" id="modal-close-btn">&times;</span>
+        <span class="modal-close" id="modal-close-btn">×</span>
         <h3 id="modal-title">¡Excelente elección!</h3>
         <p>Sigue estos dos sencillos pasos para completar tu inscripción:</p>
         <div class="modal-steps">
@@ -456,19 +440,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         
-        // --- LÓGICA PARA CARGA DEL VIDEO (LAZY LOAD) ---
-        const videoPlaceholder = document.getElementById('video-placeholder');
-        if (videoPlaceholder) {
-            videoPlaceholder.addEventListener('click', function() {
-                this.innerHTML = `
-                    <video controls muted autoplay loop playsinline>
-                        <source src="TU_VIDEO.mp4" type="video/mp4">
-                        <p>Tu navegador no soporta video. Podés ver el contenido en otro dispositivo.</p>
-                    </video>`;
-                this.style.cursor = 'default';
-            }, { once: true });
-        }
-
         // --- LÓGICA MEJORADA PARA EL MODAL DE CONTRATACIÓN ---
         const modal = document.getElementById('modal');
         const modalTitle = document.getElementById('modal-title');
