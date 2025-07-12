@@ -102,26 +102,27 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.75);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
+            transition: opacity 0.3s, visibility 0s 0.3s;
         }
         .modal-overlay.active {
             opacity: 1;
             visibility: visible;
+            transition: opacity 0.3s;
         }
         .modal-container {
             background: white;
-            padding: 30px 40px;
+            padding: 25px 35px;
             border-radius: 12px;
             text-align: center;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
             transform: scale(0.9);
             transition: transform 0.3s;
         }
@@ -138,12 +139,28 @@
             font-size: 1.1em;
             margin-bottom: 25px;
         }
-        .modal-buttons {
+        .modal-steps {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            text-align: left;
         }
-        .modal-buttons a {
+        .modal-step {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .modal-step span {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        .modal-step a {
+            display: block;
+            text-align: center;
             text-decoration: none;
             padding: 12px 20px;
             border-radius: 50px;
@@ -151,7 +168,7 @@
             font-size: 1.1em;
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        .modal-buttons a:hover {
+        .modal-step a:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0,0,0,0.15);
         }
@@ -159,10 +176,9 @@
             background: linear-gradient(135deg, #2ecc71 0%, #28b485 100%);
             color: white;
         }
-        .btn-asesor {
-            background-color: #f0f0f0;
-            color: #333;
-            border: 1px solid #ddd;
+        .btn-enviar-comprobante {
+            background-color: #25D366;
+            color: white;
         }
         .modal-close {
             position: absolute;
@@ -171,7 +187,12 @@
             font-size: 2em;
             cursor: pointer;
             color: #aaa;
+            line-height: 1;
         }
+        .modal-close:hover {
+            color: #333;
+        }
+
 
         /* --- Media Queries para Adaptabilidad Móvil --- */
         @media (max-width: 768px) {
@@ -247,9 +268,9 @@
                     <p style="margin-top: 20px; background-color: #e8f5e9; padding: 15px; border-radius: 8px; border-left: 5px solid #2ecc71;">
                         💡 <strong>Tu beneficio:</strong> La inversión más inteligente. Solucionás tu problema, ganás confianza y no gastás de más.
                     </p>
-                    <p style="font-size: 1.5em; font-weight: bold; text-align: right; margin-top: 20px; color: #333;">Inversión: $18.700</p>
+                    <p style="font-size: 1.5em; font-weight: bold; text-align: right; margin-top: 20px; color: #333;">Inversión: $17.500</p>
                     <div style="text-align: center; margin-top: 25px;">
-                        <a href="#contratar-mentoria-quirurgica" class="contratar-btn" style="display: inline-block; background: linear-gradient(135deg, #2ecc71 0%, #28b485 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4); transition: all 0.3s ease;">
+                        <a href="#" class="contratar-btn" data-payment-url="https://mpago.la/2a5Zb1t" data-course-name="Mentoría Quirúrgica" style="display: inline-block; background: linear-gradient(135deg, #2ecc71 0%, #28b485 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4); transition: all 0.3s ease;">
                             Contratar Mentoría
                         </a>
                     </div>
@@ -277,10 +298,10 @@
                     <p style="margin-top: 20px; background-color: #fffbeb; padding: 15px; border-radius: 8px; border-left: 5px solid #f1c40f;">
                         💡 <strong>Tu beneficio:</strong> Convertimos tu esfuerzo desordenado en un plan de ataque. Dejás la frustración y pasás a tener el control total de tu estudio.
                     </p>
-                    <p style="font-size: 1.5em; font-weight: bold; text-align: right; margin-top: 20px; color: #333;">Inversión: $39.500</p>
+                    <p style="font-size: 1.5em; font-weight: bold; text-align: right; margin-top: 20px; color: #333;">Inversión: $37.500</p>
                     <p style="text-align: right; color: #e74c3c; font-weight: bold;">(HOY SÁBADO A LAS 23:59HS. AUMENTA EL PRECIO)</p>
                     <div style="text-align: center; margin-top: 25px;">
-                        <a href="#contratar-plan-intermedio" class="contratar-btn" style="display: inline-block; background: linear-gradient(135deg, #f1c40f 0%, #e67e22 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(241, 196, 15, 0.4); transition: all 0.3s ease;">
+                        <a href="#" class="contratar-btn" data-payment-url="https://mpago.la/1ZKXtVz" data-course-name="Plan Intermedio" style="display: inline-block; background: linear-gradient(135deg, #f1c40f 0%, #e67e22 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(241, 196, 15, 0.4); transition: all 0.3s ease;">
                             Contratar Plan
                         </a>
                     </div>
@@ -315,7 +336,7 @@
                                 <p style="font-size: 1.5em; font-weight: bold; text-align: center; margin-top: 20px; color: #333;">PRECIO: $67.000</p>
                                 <p style="text-align: center; color: #e74c3c; font-weight: bold;">(HOY SÁBADO A LAS 23:59HS. AUMENTA EL PRECIO)</p>
                                 <div style="text-align: center; margin-top: 15px;">
-                                    <a href="#inscribir-curso-grupal" class="contratar-btn" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); transition: all 0.3s ease;">
+                                    <a href="#" class="contratar-btn" data-payment-url="https://mpago.la/25K6KJ5" data-course-name="Curso Grupal Paso a Paso" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); transition: all 0.3s ease;">
                                         Inscribirme Ahora
                                     </a>
                                 </div>
@@ -330,7 +351,7 @@
                             <div>
                                 <p style="font-size: 1.5em; font-weight: bold; text-align: center; margin-top: 20px; color: #333;">Inversión: $137.900</p>
                                 <div style="text-align: center; margin-top: 15px;">
-                                    <a href="#contratar-curso-individual-vip" class="contratar-btn" style="display: inline-block; background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(118, 75, 162, 0.4); transition: all 0.3s ease;">
+                                    <a href="#" class="contratar-btn" data-payment-url="https://mpago.la/1Jzrb9u" data-course-name="Curso Individual VIP" style="display: inline-block; background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(118, 75, 162, 0.4); transition: all 0.3s ease;">
                                         Contratar VIP
                                     </a>
                                 </div>
@@ -362,7 +383,7 @@
                     </p>
                     <p style="text-align: center; margin-top: 20px; font-weight: 600;">Este curso es para agosto, pero si te anotás ahora (sin pagar) te guardamos un lugar.</p>
                     <div style="text-align: center; margin-top: 15px;">
-                        <a href="#reservar-curso-progresivo" style="display: inline-block; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4); transition: all 0.3s ease;">
+                        <a href="https://wa.me/5493541315608?text=Hola!%20Quiero%20reservar%20mi%20lugar%20para%20el%20Curso%20Progresivo." target="_blank" style="display: inline-block; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4); transition: all 0.3s ease;">
                             RESERVAR MI LUGAR
                         </a>
                     </div>
@@ -391,7 +412,7 @@
                     </p>
                     <p style="font-size: 1.5em; font-weight: bold; text-align: right; margin-top: 20px; color: #333;">Inversión: $4.970</p>
                     <div style="text-align: center; margin-top: 25px;">
-                        <a href="#comprar-final-grabado" class="contratar-btn" style="display: inline-block; background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(142, 68, 173, 0.4); transition: all 0.3s ease;">
+                        <a href="#" class="contratar-btn" data-payment-url="https://mpago.la/1onXodc" data-course-name="Final Grabado" style="display: inline-block; background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%); color: white; padding: 15px 35px; font-size: 1.2em; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 20px rgba(142, 68, 173, 0.4); transition: all 0.3s ease;">
                             Comprar Final Grabado
                         </a>
                     </div>
@@ -405,9 +426,9 @@
         <h2>Lo que dicen nuestros alumnos</h2>
         <div class="testimonial-grid">
             <!-- Reemplaza estas URLs con las de tus capturas -->
-            <img src="imagen1.png" alt="Testimonio de alumno 1">
-            <img src="imagen2.png" alt="Testimonio de alumno 2">
-            <img src="imagen3.png" alt="Testimonio de alumno 3">
+            <img src="https://via.placeholder.com/300x500/ffffff/000000?text=¡Aprobé,+gracias!" alt="Testimonio de alumno 1">
+            <img src="https://via.placeholder.com/300x500/ffffff/000000?text=¡El+mejor+profe!" alt="Testimonio de alumno 2">
+            <img src="https://via.placeholder.com/300x500/ffffff/000000?text=Me+salvaron+la+materia" alt="Testimonio de alumno 3">
         </div>
     </section>
 
@@ -417,11 +438,17 @@
 <div class="modal-overlay" id="modal">
     <div class="modal-container">
         <span class="modal-close" id="modal-close-btn">&times;</span>
-        <h3>¡Ya casi es tuyo!</h3>
-        <p>Estás a un paso de asegurar tu aprobado. ¿Cómo querés seguir?</p>
-        <div class="modal-buttons">
-            <a href="#" id="modal-pagar-btn" class="btn-pagar">Pagar ahora</a>
-            <a href="https://wa.me/TUNUMERO?text=Hola!%20Quisiera%20consultar%20sobre%20un%20curso." target="_blank" class="btn-asesor">Hablar con un asesor</a>
+        <h3 id="modal-title">¡Excelente elección!</h3>
+        <p>Sigue estos dos sencillos pasos para completar tu inscripción:</p>
+        <div class="modal-steps">
+            <div class="modal-step">
+                <span><strong>Paso 1:</strong> Realizá el pago de forma segura.</span>
+                <a href="#" id="modal-pagar-btn" class="btn-pagar" target="_blank" rel="noopener noreferrer">Pagar Ahora</a>
+            </div>
+            <div class="modal-step">
+                 <span><strong>Paso 2:</strong> Envianos el comprobante para coordinar.</span>
+                <a href="#" id="modal-whatsapp-btn" class="btn-enviar-comprobante" target="_blank" rel="noopener noreferrer">Enviar Comprobante por WhatsApp</a>
+            </div>
         </div>
     </div>
 </div>
@@ -439,20 +466,41 @@
                         <p>Tu navegador no soporta video. Podés ver el contenido en otro dispositivo.</p>
                     </video>`;
                 this.style.cursor = 'default';
-            }, { once: true }); // El evento solo se dispara una vez
+            }, { once: true });
         }
 
-        // --- LÓGICA PARA EL MODAL DE CONTRATACIÓN ---
+        // --- LÓGICA MEJORADA PARA EL MODAL DE CONTRATACIÓN ---
         const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
         const modalPagarBtn = document.getElementById('modal-pagar-btn');
+        const modalWhatsappBtn = document.getElementById('modal-whatsapp-btn');
         const modalCloseBtn = document.getElementById('modal-close-btn');
+        
         const contratarButtons = document.querySelectorAll('.contratar-btn');
+        const waNumber = '5493541315608'; // Centralizamos el número de WhatsApp
 
         // Función para abrir el modal
         const openModal = (e) => {
-            e.preventDefault(); // Evita que el link navegue al #
-            const paymentUrl = e.currentTarget.href;
-            modalPagarBtn.href = paymentUrl; // Asigna la URL de pago al botón del modal
+            // Solo actuar si el botón tiene un data-payment-url.
+            // Así se ignora el botón de "RESERVAR" que va directo a WhatsApp.
+            const paymentUrl = e.currentTarget.dataset.paymentUrl;
+            if (!paymentUrl) {
+                return; 
+            }
+            
+            e.preventDefault(); 
+            
+            const courseName = e.currentTarget.dataset.courseName || 'el curso'; // Usar un nombre genérico si no se especifica
+
+            // Personalizar el contenido del modal
+            modalTitle.textContent = `Estás por inscribirte a: ${courseName}`;
+            modalPagarBtn.href = paymentUrl;
+
+            // Crear el mensaje de WhatsApp personalizado
+            const whatsappMessage = encodeURIComponent(`Hola! Hice el pago de "${courseName}", te paso el comprobante.`);
+            modalWhatsappBtn.href = `https://wa.me/${waNumber}?text=${whatsappMessage}`;
+            
+            // Mostrar el modal
             modal.classList.add('active');
         };
 
@@ -461,18 +509,19 @@
             modal.classList.remove('active');
         };
 
-        // Asignar eventos
+        // Asignar eventos a todos los botones de contratación
         contratarButtons.forEach(button => {
             button.addEventListener('click', openModal);
         });
 
+        // Eventos para cerrar el modal
         if (modalCloseBtn) {
             modalCloseBtn.addEventListener('click', closeModal);
         }
-
-        // Cerrar modal al hacer clic fuera de él
+        
         if (modal) {
             modal.addEventListener('click', function(e) {
+                // Si el clic es en el fondo oscuro (el overlay), cerrar el modal
                 if (e.target === this) {
                     closeModal();
                 }
