@@ -162,12 +162,41 @@
         }
 
         .cta-section h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; }
-        .cta-section .intro-p { font-size: 1.1rem; margin-bottom: 25px; }
         .cta-section h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; }
         
+        /* --- MEJORA #1: Párrafo introductorio más legible --- */
+        .cta-section .intro-p {
+            font-size: 1.15rem;       /* Un poco más grande para facilitar la lectura */
+            color: #555;              /* Un gris oscuro es más suave que el negro puro */
+            margin-bottom: 30px;      /* Un poco más de espacio debajo */
+            line-height: 1.8;         /* Aumenta el espacio entre líneas del párrafo */
+        }
+        
         .cta-section ul { list-style: none; padding-left: 0; margin-bottom: 30px; }
-        .cta-section li { font-size: 1.05rem; padding-left: 30px; position: relative; margin-bottom: 15px; }
-        .cta-section li::before { content: '✔'; color: var(--color-primario); font-weight: 700; position: absolute; left: 0; top: 1px; }
+        
+        /* --- MEJORA #2: Lista de opciones más clara y espaciada --- */
+        .cta-section li {
+            font-size: 1.1rem;      /* Aumentamos el tamaño base */
+            padding-left: 35px;
+            position: relative;
+            margin-bottom: 20px;    /* Más separación entre elementos */
+            line-height: 1.6;
+        }
+
+        .cta-section li::before {
+            content: '✔';
+            color: var(--color-primario);
+            font-weight: 700;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 1.2rem;      /* Hacemos el check un poco más grande */
+        }
+        
+        /* Estilo para la parte descriptiva (no negrita) de la lista */
+        .cta-section li span {
+            color: #6c757d;         /* Un gris más claro para crear jerarquía */
+        }
 
         .delivery-options {
             display: flex;
@@ -177,17 +206,34 @@
             margin-bottom: 35px;
         }
 
+        /* --- MEJORA #3: Tarjetas de opciones más atractivas --- */
         .option-card {
             background-color: var(--color-blanco);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
+            padding: 25px 20px;                   /* Más espacio vertical */
+            border-radius: var(--borde-radio);    /* Usamos tu variable para consistencia */
+            border: 1px solid #e0e0e0;
+            text-align: center;                   /* Centramos el texto */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+            color: #555;                          /* Un color de texto más suave */
+        }
+
+        .option-card:hover {
+            transform: translateY(-4px);          /* Efecto de "levantarse" */
+            box-shadow: var(--sombra-suave);      /* Sombra sutil al pasar el ratón */
         }
 
         .option-card strong {
             color: var(--color-primario);
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 5px;
         }
         
+        /* Párrafo final antes del botón */
+        .cta-final-p {
+            margin-bottom: 25px;
+        }
+
         .cta-button {
             display: inline-block;
             background-color: var(--color-secundario);
@@ -204,6 +250,39 @@
         .cta-button:hover {
             background-color: var(--color-secundario-hover);
             transform: translateY(-3px);
+        }
+
+        /* --- ESTILOS ADICIONALES PARA EL TEXTO INTRODUCTORIO DEL CTA --- */
+        
+        .intro-text-block {
+            margin-bottom: 30px; /* Espacio después del bloque de texto */
+        }
+        
+        .intro-text-block .intro-p {
+            font-size: 1.15rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 1rem; /* Espacio entre los dos párrafos */
+        }
+        
+        /* Estilo para la primera frase resaltada (con el color primario) */
+        .intro-text-block .highlight-benefit {
+            color: var(--color-primario);
+            font-weight: 700; /* Hacemos que sea bien notoria */
+        }
+        
+        /* Estilo para las negritas generales dentro de este bloque */
+        .intro-text-block strong {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* EFECTO "MARCADOR" para la palabra "resolverla fácil" */
+        .intro-text-block .highlight-solve {
+            display: inline; /* Asegura que el fondo se aplique correctamente */
+            background: linear-gradient(180deg, transparent 50%, #aedcff 50%); /* Simula un subrayado de marcador */
+            font-weight: 700;
+            color: #2a2a2a;
         }
         
         /* --- DISEÑO RESPONSIVO --- */
@@ -276,18 +355,30 @@
                 </div>
             </div>
         </section>
-
+        
         <!-- INICIO DE LA NUEVA SECCIÓN CTA -->
         <section class="cta-section" id="cta">
           <div class="cta-content">
             <h2>¿Qué parte de Probabilidad querés destrabar?</h2>
-            <p class="intro-p">Esta semana arrancamos los grupos intensivos, pero podés sumarte solo a lo que necesitás destrabar. <br> No necesitás preparar todo el final con nosotros. Podés elegir justo la parte que más te cuesta y resolverla fácil.</p>
-            
+            <!-- Reemplaza el <p class="intro-p"> original por este bloque -->
+            <div class="intro-text-block">
+                <p class="intro-p">
+                    Esta semana arrancamos los grupos intensivos, pero podés sumarte 
+                    <strong class="highlight-benefit">solo a lo que necesitás destrabar.</strong>
+                </p>
+                <p class="intro-p">
+                    No necesitás preparar todo el final con nosotros. Podés elegir 
+                    <strong>justo la parte que más te cuesta</strong> y 
+                    <span class="highlight-solve">resolverla fácil.</span>
+                </p>
+            </div>
+            <!-- Fin del bloque de reemplazo -->
             <h3>Elegí la unidad y decidí cómo querés verla:</h3>
             <ul>
-              <li><strong>Práctica desde cero</strong>, si sentís que no entendés nada.</li>
-              <li><strong>Demostraciones explicadas</strong>, si te trabás con la parte teórica.</li>
-              <li><strong>Repaso rápido</strong>, si querés asegurarte que no se te escapa nada.</li>
+              <!-- HTML MODIFICADO: Se añade <span> para la parte descriptiva -->
+              <li><strong>Práctica desde cero</strong><span>, si sentís que no entendés nada.</span></li>
+              <li><strong>Demostraciones explicadas</strong><span>, si te trabás con la parte teórica.</span></li>
+              <li><strong>Repaso rápido</strong><span>, si querés asegurarte que no se te escapa nada.</span></li>
             </ul>
         
             <div class="delivery-options">
@@ -295,7 +386,7 @@
               <div class="option-card"><strong>Grabado:</strong> si preferís estudiar a tu ritmo, en cualquier momento.</div>
             </div>
         
-            <p style="margin-bottom: 25px;"><strong>Solo pagás por lo que realmente necesitás.</strong> Pedime info según tu caso:</p>
+            <p class="cta-final-p"><strong>Solo pagás por lo que realmente necesitás.</strong> Pedime info según tu caso:</p>
         
             <a 
               href="https://wa.me/5493541315608?text=Hola!%20Vengo%20de%20la%20p%C3%A1gina%20y%20me%20interesa%20resolver%20solo%20la%20parte%20que%20me%20cuesta"
