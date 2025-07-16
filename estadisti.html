@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desbloqueá Probabilidad Paso a Paso</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- RESET Y CONFIGURACIÓN GENERAL --- */
+        :root {
+            --color-primario: #007BFF;
+            --color-secundario: #28a745; /* Verde para el botón de WhatsApp */
+            --color-secundario-hover: #218838;
+            --color-texto: #333333;
+            --color-fondo: #f8f9fa;
+            --color-blanco: #ffffff;
+            --color-fondo-cta: #e9ecef;
+            --sombra-suave: 0 4px 15px rgba(0, 0, 0, 0.08);
+            --borde-radio: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- 1. ENCABEZADO EMOCIONAL --- */
+        .hero-header {
+            background-color: var(--color-blanco);
+            text-align: left;
+            padding: 60px 20px 40px 20px;
+        }
+
+        .hero-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            color: #2a2a2a;
+            max-width: 650px;
+        }
+
+        .hero-header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            color: #555;
+        }
+
+        /* --- 2. SECCIÓN PRINCIPAL – FLOWCHART --- */
+        .flowchart-section {
+            padding: 60px 0;
+        }
+        
+        .flowchart-section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+
+        .flowchart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .flowchart-path {
+            background-color: var(--color-blanco);
+            padding: 25px;
+            border-radius: var(--borde-radio);
+            box-shadow: var(--sombra-suave);
+            border: 1px solid #e9ecef;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-primario);
+            margin-bottom: 20px;
+        }
+        
+        .decision-block {
+            padding-left: 20px;
+            border-left: 3px solid #e0e0e0;
+            margin-top: 20px;
+        }
+        
+        .decision-block h4 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; }
+        .arrow { font-weight: 700; color: var(--color-primario); margin-right: 8px; }
+
+        .formula-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .formula-card strong { display: block; font-size: 1.1rem; margin-bottom: 5px; }
+        .formula-card code { font-size: 1.2rem; font-weight: 600; color: var(--color-primario); background-color: #e9f2ff; padding: 3px 8px; border-radius: 5px; }
+        .formula-card em { display: block; font-size: 0.9rem; color: #6c757d; margin-top: 10px; font-style: normal; }
+
+        /* --- 3. TESTIMONIO --- */
+        .testimonial-section {
+            padding: 60px 0;
+            background-color: var(--color-blanco);
+        }
+
+        .testimonial-card {
+            text-align: center;
+            padding: 40px;
+            background-color: #f8f9fa;
+            border-left: 5px solid var(--color-primario);
+            border-radius: var(--borde-radio);
+            box-shadow: var(--sombra-suave);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-card blockquote {
+            font-size: 1.4rem; font-weight: 600; line-height: 1.5; color: #333; border: none; padding: 0; margin: 0; position: relative; z-index: 1;
+        }
+
+        .testimonial-card::before {
+            content: '“'; font-size: 8rem; font-weight: 700; color: var(--color-primario); opacity: 0.08; position: absolute; left: 20px; top: 10px; line-height: 1; z-index: 0;
+        }
+
+        .testimonial-card footer {
+            margin-top: 20px; font-size: 1.1rem; font-weight: 600; color: #555; position: relative; z-index: 1;
+        }
+
+        /* --- 4. LLAMADO A LA ACCIÓN (CTA) - VERSIÓN FINAL --- */
+        .cta-section {
+            padding: 80px 20px;
+            background-color: var(--color-fondo-cta);
+        }
+        
+        .cta-content {
+            max-width: 650px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .cta-section h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; }
+        .cta-section .intro-p { font-size: 1.1rem; margin-bottom: 25px; }
+        .cta-section h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; }
+        
+        .cta-section ul { list-style: none; padding-left: 0; margin-bottom: 30px; }
+        .cta-section li { font-size: 1.05rem; padding-left: 30px; position: relative; margin-bottom: 15px; }
+        .cta-section li::before { content: '✔'; color: var(--color-primario); font-weight: 700; position: absolute; left: 0; top: 1px; }
+
+        .delivery-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+            margin-bottom: 35px;
+        }
+
+        .option-card {
+            background-color: var(--color-blanco);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .option-card strong {
+            color: var(--color-primario);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--color-secundario);
+            color: var(--color-blanco);
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+        }
+
+        .cta-button:hover {
+            background-color: var(--color-secundario-hover);
+            transform: translateY(-3px);
+        }
+        
+        /* --- DISEÑO RESPONSIVO --- */
+        @media (min-width: 768px) {
+            .hero-header h1 { font-size: 3.2rem; }
+            .hero-header p { font-size: 1.2rem; }
+            .flowchart-section-title { font-size: 2.2rem; }
+            .testimonial-card blockquote { font-size: 1.6rem; }
+            .cta-section h2 { font-size: 2.2rem; }
+            .delivery-options { flex-direction: row; }
+            .option-card { flex: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero-header">
+        <div class="container">
+            <h1>¿Siempre te trabás al resolver ejercicios de probabilidad?</h1>
+            <p>No es tu culpa: nadie te enseñó cómo pensar la probabilidad PASO A PASO.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="flowchart-section">
+            <div class="container">
+                <h2 class="flowchart-section-title">Tu GPS para Problemas de Probabilidad</h2>
+                <div class="flowchart-container">
+                    <!-- CAMINO 1: REGLA DE LA SUMA -->
+                    <div class="flowchart-path">
+                        <h3 class="question">¿El problema te pide la probabilidad de que ocurra "A O B"?</h3>
+                        <div class="decision-block">
+                            <h4><span class="arrow">→</span> Sí → Estás en el camino de la <strong>REGLA DE LA SUMA</strong></h4>
+                            <p><strong>Pregunta clave:</strong> ¿A y B pueden ocurrir al mismo tiempo?</p>
+                            <div class="decision-block">
+                                <h4><span class="arrow">→</span> No → Son mutuamente excluyentes</h4>
+                                <div class="formula-card"><strong>Fórmula:</strong> <code>P(A ∪ B) = P(A) + P(B)</code></div>
+                            </div>
+                            <div class="decision-block">
+                                <h4><span class="arrow">→</span> Sí → No son excluyentes</h4>
+                                <div class="formula-card"><strong>Fórmula:</strong> <code>P(A ∪ B) = P(A) + P(B) - P(A ∩ B)</code><em>(¡No te olvides de restar la parte que se superpone!)</em></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- CAMINO 2: REGLA DE LA MULTIPLICACIÓN -->
+                    <div class="flowchart-path">
+                        <h3 class="question">¿El problema te pide la probabilidad de que ocurra "A Y B"?</h3>
+                        <div class="decision-block">
+                            <h4><span class="arrow">→</span> Sí → Estás en el camino de la <strong>REGLA DE LA MULTIPLICACIÓN</strong></h4>
+                            <p><strong>Pregunta clave:</strong> ¿La ocurrencia de A afecta la probabilidad de B?</p>
+                            <div class="decision-block">
+                                <h4><span class="arrow">→</span> No → Son independientes</h4>
+                                <div class="formula-card"><strong>Fórmula:</strong> <code>P(A ∩ B) = P(A) * P(B)</code></div>
+                            </div>
+                            <div class="decision-block">
+                                <h4><span class="arrow">→</span> Sí → Son dependientes</h4>
+                                <div class="formula-card"><strong>Fórmula:</strong> <code>P(A ∩ B) = P(A) * P(B|A)</code></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonial-section">
+            <div class="container">
+                <div class="testimonial-card">
+                    <blockquote>Entendí más en una de sus clases que en medio cuatrimestre.</blockquote>
+                    <footer>— Jere, Estadística I</footer>
+                </div>
+            </div>
+        </section>
+
+        <!-- INICIO DE LA NUEVA SECCIÓN CTA -->
+        <section class="cta-section" id="cta">
+          <div class="cta-content">
+            <h2>¿Qué parte de Probabilidad querés destrabar?</h2>
+            <p class="intro-p">Esta semana arrancamos los grupos intensivos, pero podés sumarte solo a lo que necesitás destrabar. <br> No necesitás preparar todo el final con nosotros. Podés elegir justo la parte que más te cuesta y resolverla fácil.</p>
+            
+            <h3>Elegí la unidad y decidí cómo querés verla:</h3>
+            <ul>
+              <li><strong>Práctica desde cero</strong>, si sentís que no entendés nada.</li>
+              <li><strong>Demostraciones explicadas</strong>, si te trabás con la parte teórica.</li>
+              <li><strong>Repaso rápido</strong>, si querés asegurarte que no se te escapa nada.</li>
+            </ul>
+        
+            <div class="delivery-options">
+              <div class="option-card"><strong>En vivo:</strong> si querés preguntar y resolver tus dudas al instante.</div>
+              <div class="option-card"><strong>Grabado:</strong> si preferís estudiar a tu ritmo, en cualquier momento.</div>
+            </div>
+        
+            <p style="margin-bottom: 25px;"><strong>Solo pagás por lo que realmente necesitás.</strong> Pedime info según tu caso:</p>
+        
+            <a 
+              href="https://wa.me/5493541315608?text=Hola!%20Vengo%20de%20la%20p%C3%A1gina%20y%20me%20interesa%20resolver%20solo%20la%20parte%20que%20me%20cuesta"
+              class="cta-button" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Abrir WhatsApp para pedir más información"
+            >
+              Quiero info según mi caso
+            </a>
+          </div>
+        </section>
+        <!-- FIN DE LA NUEVA SECCIÓN CTA -->
+    </main>
+
+</body>
+</html>
