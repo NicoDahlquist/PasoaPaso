@@ -53,6 +53,12 @@
             height: auto;
             margin-bottom: 15px;
         }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px; /* Ajusta según lo que quieras en móvil */
+            min-height: 250px;
+        }
         #tabla-datos { width: 100%; border-collapse: collapse; margin-top: 20px; }
         #tabla-datos th, #tabla-datos td { padding: 12px; text-align: center; }
         #tabla-datos th { background-color: var(--unc-blue); color: var(--text-light); }
@@ -126,9 +132,9 @@
 
     <div class="container">
         <header>
-            <img src="logo.jpeg" alt="Logo de [Nombre de tu Academia]" class="logo">
-            <h1>Calculadora y Visualizador de Variable Aleatoria Discreta</h1>
-            <h2>Herramienta exclusiva para estudiantes de Estadística I de la FCE - UNC</h2>
+            <img src="logo.jpeg" alt="Logo de la Academia Paso a Paso" class="logo">
+            <h1>Super calculadora - Estadística I FCE - UNC</h1>
+            <h2>Herramienta exclusiva para ustedes</h2>
         </header>
 
         <section class="card" id="seccion-entrada">
@@ -170,20 +176,63 @@
 
         <section class="card" id="seccion-graficos">
             <h3>3. Gráficos de tu Distribución</h3>
-            <canvas id="grafico-cuantia"></canvas>
-            <canvas id="grafico-distribucion" style="margin-top: 20px;"></canvas>
+            <div class="chart-container">
+                <canvas id="grafico-cuantia"></canvas>
+            </div>
+            <div class="chart-container" style="margin-top: 20px;">
+                <canvas id="grafico-distribucion"></canvas>
+            </div>
         </section>
 
         <footer>
             <div id="cta-inicial">
-                <p>Una herramienta creada por <strong>[Nombre de tu Academia]</strong> para ayudarte a empezar con el pie derecho.</p>
+                <p>Tocá en <strong>CALCULAR Y VISUALIZAR</strong> y luego probá con los datos que vos quieras.</p>
             </div>
+
             <div id="cta-wow">
-                <h2>¿Viste qué fácil? Esto es solo el 1% de nuestro método.</h2>
-                <p>En <strong>[Nombre de tu Academia]</strong> transformamos lo complejo en simple. Dominá Estadística I con clases prácticas, soporte constante y herramientas exclusivas como esta.</p>
-                <a href="#" class="button">¡Quiero Aprobar! Ver Cursada de Apoyo</a>
+                <h2 style="color: var(--academic-gray);">
+                    ¿Viste qué fácil? Esto es solo el 1% de nuestro método.
+                </h2>
+                <p>En la <strong>Academia Paso a Paso</strong> transformamos lo complejo en simple. Dominá Estadística I con clases prácticas, soporte constante y herramientas exclusivas como esta.</p>
+
+                <!-- Contador -->
+                <div id="contador" style="font-size: 1.2em; color: rgb(228, 76, 76); font-weight: bold; margin: 10px 0;">
+                    Subiremos el precio de inscripción en: <span id="tiempo-restante"></span>
+                </div>
+
+                <!-- Botón con enlace a WhatsApp -->
+                <a href="https://wa.me/5493541315608?text=Hola!%20Quiero%20m%C3%A1s%20info%20sobre%20Estad%C3%ADstica%20I%20FCE%20UNC%20con%20la%20academia%20paso%20a%20paso!" 
+                target="_blank" 
+                class="button">
+                <strong>Quiero Aprobar!</strong> <br> Denme más info sobre la cursada que ofrecen!
+                </a>
             </div>
         </footer>
+
+        <!-- Script para contador regresivo -->
+        <script>
+            function actualizarContador() {
+                const fin = new Date("2025-08-14T00:00:00").getTime();
+                const ahora = new Date().getTime();
+                const diferencia = fin - ahora;
+
+                if (diferencia <= 0) {
+                    document.getElementById("tiempo-restante").innerHTML = "¡La oferta terminó! Consultanos si queda lugar antes de que se acaben!!";
+                    return;
+                }
+
+                const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+                const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+                document.getElementById("tiempo-restante").innerHTML =
+                    `${dias} días ${horas} horas ${minutos} mins ${segundos} segs`;
+            }
+
+            setInterval(actualizarContador, 1000);
+            actualizarContador();
+        </script>
     </div>
 
     <script>
@@ -284,8 +333,19 @@
                 if (chartCuantia) chartCuantia.destroy();
                 chartCuantia = new Chart(ctxCuantia, {
                     type: 'bar',
-                    data: { labels: valoresX.map(String), datasets: [{ label: 'Función de Cuantía p(x)', data: probabilidades, backgroundColor: 'rgba(0, 169, 224, 0.6)', borderColor: 'rgba(0, 169, 224, 1)', borderWidth: 1 }] },
-                    options: { scales: { y: { beginAtZero: true } }, plugins: { title: { display: true, text: 'Función de Cuantía p(x)' } } }
+                    data: { labels: valoresX.map(String), datasets: [{ 
+                        label: 'Función de Cuantía p(x)', 
+                        data: probabilidades, 
+                        backgroundColor: 'rgba(0, 169, 224, 0.6)', 
+                        borderColor: 'rgba(0, 169, 224, 1)', 
+                        borderWidth: 1 
+                    }] },
+                    options: { 
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { y: { beginAtZero: true } },
+                        plugins: { title: { display: true, text: 'Función de Cuantía p(x)' } }
+                    }
                 });
                 let probAcumulada = 0;
                 const datosDistribucion = probabilidades.map(p => probAcumulada += p);
@@ -293,8 +353,20 @@
                 if (chartDistribucion) chartDistribucion.destroy();
                 chartDistribucion = new Chart(ctxDistribucion, {
                     type: 'line',
-                    data: { labels: valoresX.map(String), datasets: [{ label: 'Función de Distribución F(x)', data: datosDistribucion, borderColor: 'rgba(0, 85, 140, 1)', backgroundColor: 'rgba(0, 85, 140, 0.2)', stepped: true, fill: true }] },
-                    options: { scales: { y: { beginAtZero: true, max: 1 } }, plugins: { title: { display: true, text: 'Función de Distribución Acumulada F(x)' } } }
+                    data: { labels: valoresX.map(String), datasets: [{ 
+                        label: 'Función de Distribución F(x)', 
+                        data: datosDistribucion, 
+                        borderColor: 'rgba(0, 85, 140, 1)', 
+                        backgroundColor: 'rgba(0, 85, 140, 0.2)', 
+                        stepped: true, 
+                        fill: true 
+                    }] },
+                    options: { 
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { y: { beginAtZero: true, max: 1 } },
+                        plugins: { title: { display: true, text: 'Función de Distribución Acumulada F(x)' } }
+                    }
                 });
                 seccionResultados.scrollIntoView({ behavior: 'smooth' });
                 mostrarCtaWow();
