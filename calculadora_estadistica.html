@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora y Visualizador de Variable Aleatoria Discreta - Estadística I FCE</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Paleta de Colores y Variables --- */
+        :root {
+            --unc-blue: #00558C;
+            --academic-gray: #F5F5F5;
+            --accent-celeste: #00A9E0;
+            --text-dark: #333;
+            --text-light: #f8f9fa;
+            --card-bg: #FFFFFF;
+            --success-green: #28a745;
+            --error-red: #dc3545;
+            --cta-orange: #FF6B00;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* --- Reset y Estilos Base --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--academic-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* --- Contenedor Principal y Secciones --- */
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* --- Tipografía --- */
+        h1, h2, h3, h4 {
+            color: var(--unc-blue);
+            margin-bottom: 15px;
+        }
+        h1 { font-size: 2rem; text-align: center; }
+        h2 { font-size: 1.5rem; text-align: center; border-bottom: 2px solid var(--accent-celeste); padding-bottom: 10px; }
+        h3 { font-size: 1.3rem; border-left: 4px solid var(--accent-celeste); padding-left: 10px; }
+        h4 { font-size: 1.1rem; margin-top: 20px; }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        header .logo-placeholder {
+            width: 80px;
+            height: 80px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--unc-blue);
+        }
+
+        /* --- Tabla de Entrada --- */
+        #tabla-datos {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        #tabla-datos th, #tabla-datos td {
+            padding: 12px;
+            text-align: center;
+        }
+        #tabla-datos th {
+            background-color: var(--unc-blue);
+            color: var(--text-light);
+        }
+        #tabla-datos input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        #tabla-datos input:focus {
+            outline: none;
+            border-color: var(--accent-celeste);
+            box-shadow: 0 0 0 3px rgba(0, 169, 224, 0.2);
+        }
+
+        /* --- Botones --- */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.2s ease-in-out;
+        }
+        #btn-calcular {
+            background-color: var(--cta-orange);
+            color: white;
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+        #btn-calcular:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 0, 0.4);
+        }
+        .btn-secondary {
+            background-color: var(--unc-blue);
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #004470;
+        }
+        .btn-tertiary {
+            background-color: #e0e0e0;
+            color: var(--text-dark);
+        }
+        .btn-tertiary:hover {
+            background-color: #c7c7c7;
+        }
+
+        /* --- Resultados --- */
+        #seccion-resultados, #seccion-graficos {
+            display: none; /* Ocultos por defecto */
+        }
+        #verificacion-prob {
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .success {
+            background-color: #e9f7ef;
+            color: var(--success-green);
+        }
+        .error {
+            background-color: #fbe9e9;
+            color: var(--error-red);
+        }
+        #resultados h4 {
+            position: relative;
+            cursor: help;
+        }
+        #resultados h4 .tooltip {
+            visibility: hidden;
+            width: 250px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        #resultados h4:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        #interpretacion-resultados {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        /* --- Footer y CTA --- */
+        footer {
+            width: 100%;
+            max-width: 800px;
+            background: linear-gradient(45deg, var(--unc-blue), #003366);
+            color: var(--text-light);
+            text-align: center;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        #cta-wow {
+            display: none; /* Oculto por defecto */
+        }
+        footer .button {
+            background-color: var(--cta-orange);
+            color: white;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        footer .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(255, 107, 0, 0.4);
+        }
+
+        /* --- Clases de Utilidad --- */
+        .hidden {
+            display: none;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo-placeholder">[Tu Academia]</div>
+            <h1>Calculadora y Visualizador de Variable Aleatoria Discreta</h1>
+            <h2>La herramienta exclusiva para estudiantes de Estadística I de la FCE - UNC</h2>
+        </header>
+
+        <section class="card" id="seccion-entrada">
+            <h3>1. Definí tu Variable Aleatoria (X)</h3>
+            <div class="button-group">
+                <button class="button btn-secondary" id="btn-ejemplo">📊 Cargar Ejemplo: Artículos Defectuosos (pág. 9)</button>
+                <button class="button btn-tertiary" id="btn-limpiar">🔄 Limpiar Tabla</button>
+            </div>
+            <table id="tabla-datos">
+                <thead>
+                    <tr>
+                        <th>Valor de X (xᵢ)</th>
+                        <th>Probabilidad p(xᵢ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Filas generadas por JS -->
+                </tbody>
+            </table>
+            <div class="button-group">
+                <button class="button btn-tertiary" id="btn-add-row">+ Agregar Fila</button>
+                <button class="button btn-tertiary" id="btn-remove-row">- Eliminar Última Fila</button>
+            </div>
+            <button class="button" id="btn-calcular">CALCULAR Y VISUALIZAR</button>
+        </section>
+
+        <section class="card" id="seccion-resultados">
+            <h3>2. Análisis Completo de tu Variable</h3>
+            <div id="resultados">
+                <p id="verificacion-prob"></p>
+                <h4 data-tooltip="E(X) = Σ(xᵢ * p(xᵢ))">Esperanza E(X) = <span id="res-esperanza"></span></h4>
+                <h4 data-tooltip="V(X) = Σ(xᵢ² * p(xᵢ)) - [E(X)]²">Varianza V(X) = <span id="res-varianza"></span></h4>
+                <h4 data-tooltip="σ(X) = √V(X)">Desviación Estándar σ(X) = <span id="res-desvio"></span></h4>
+                
+                <div id="interpretacion-resultados">
+                    <h4>Interpretación:</h4>
+                    <p id="texto-esperanza"></p>
+                    <p id="texto-desvio"></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card" id="seccion-graficos">
+            <h3>3. Gráficos de tu Distribución</h3>
+            <canvas id="grafico-cuantia"></canvas>
+            <canvas id="grafico-distribucion" style="margin-top: 20px;"></canvas>
+        </section>
+
+        <footer>
+            <div id="cta-inicial">
+                <p>Una herramienta creada por <strong>[Nombre de tu Academia]</strong> para ayudarte a empezar con el pie derecho.</p>
+            </div>
+            <div id="cta-wow">
+                <h2>¿Viste qué fácil? Esto es solo el 1% de nuestro método.</h2>
+                <p>En <strong>[Nombre de tu Academia]</strong> transformamos lo complejo en simple. Dominá Estadística I con clases prácticas, soporte constante y herramientas exclusivas como esta.</p>
+                <a href="#" class="button">¡Quiero Aprobar! Ver Cursada de Apoyo</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DOM Elements ---
+            const tablaBody = document.querySelector('#tabla-datos tbody');
+            const btnCalcular = document.getElementById('btn-calcular');
+            const btnAddRow = document.getElementById('btn-add-row');
+            const btnRemoveRow = document.getElementById('btn-remove-row');
+            const btnEjemplo = document.getElementById('btn-ejemplo');
+            const btnLimpiar = document.getElementById('btn-limpiar');
+            
+            const seccionResultados = document.getElementById('seccion-resultados');
+            const seccionGraficos = document.getElementById('seccion-graficos');
+            const verificacionProb = document.getElementById('verificacion-prob');
+            
+            const resEsperanza = document.getElementById('res-esperanza');
+            const resVarianza = document.getElementById('res-varianza');
+            const resDesvio = document.getElementById('res-desvio');
+            
+            const textoEsperanza = document.getElementById('texto-esperanza');
+            const textoDesvio = document.getElementById('texto-desvio');
+
+            const ctaInicial = document.getElementById('cta-inicial');
+            const ctaWow = document.getElementById('cta-wow');
+
+            let chartCuantia = null;
+            let chartDistribucion = null;
+            let primerCalculoExitoso = false;
+
+            // --- Functions ---
+
+            function crearFila(valorX = '', prob = '') {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><input type="number" class="valor-x" value="${valorX}" step="any"></td>
+                    <td><input type="number" class="prob-px" value="${prob}" step="any" min="0" max="1"></td>
+                `;
+                tablaBody.appendChild(tr);
+            }
+
+            function agregarFila() {
+                crearFila();
+            }
+
+            function eliminarFila() {
+                if (tablaBody.rows.length > 1) {
+                    tablaBody.deleteRow(-1);
+                }
+            }
+
+            function limpiarTabla() {
+                tablaBody.innerHTML = '';
+                for (let i = 0; i < 4; i++) {
+                    agregarFila();
+                }
+            }
+
+            function limpiarResultados() {
+                seccionResultados.style.display = 'none';
+                seccionGraficos.style.display = 'none';
+                verificacionProb.textContent = '';
+                verificacionProb.className = '';
+                if (chartCuantia) chartCuantia.destroy();
+                if (chartDistribucion) chartDistribucion.destroy();
+            }
+            
+            function limpiarTodo() {
+                limpiarTabla();
+                limpiarResultados();
+            }
+
+            function cargarEjemplo() {
+                const ejemplo = {
+                    x: [0, 1, 2, 3],
+                    p: [0.512, 0.384, 0.096, 0.008]
+                };
+                tablaBody.innerHTML = '';
+                ejemplo.x.forEach((val, index) => {
+                    crearFila(val, ejemplo.p[index]);
+                });
+            }
+
+            function cargarYEvaluarEjemplo() {
+                cargarEjemplo();
+                procesarDatos();
+            }
+
+            function mostrarError(mensaje) {
+                limpiarResultados();
+                seccionResultados.style.display = 'block';
+                verificacionProb.textContent = `❌ Error: ${mensaje}`;
+                verificacionProb.className = 'error';
+            }
+            
+            function mostrarCtaWow() {
+                if (!primerCalculoExitoso) {
+                    ctaInicial.style.display = 'none';
+                    ctaWow.style.display = 'block';
+                    ctaWow.classList.add('fade-in');
+                    primerCalculoExitoso = true;
+                }
+            }
+
+            function procesarDatos() {
+                limpiarResultados();
+                
+                const filas = tablaBody.querySelectorAll('tr');
+                let valoresX = [];
+                let probabilidades = [];
+                let sumaProb = 0;
+
+                // 1. Read & Validate Data
+                for (let i = 0; i < filas.length; i++) {
+                    const valorXInput = filas[i].querySelector('.valor-x');
+                    const probInput = filas[i].querySelector('.prob-px');
+
+                    if (valorXInput.value === '' && probInput.value === '') continue;
+
+                    if (valorXInput.value === '' || probInput.value === '') {
+                        mostrarError(`Faltan datos en la fila ${i + 1}.`);
+                        return;
+                    }
+
+                    const valorX = parseFloat(valorXInput.value);
+                    const prob = parseFloat(probInput.value);
+
+                    if (isNaN(valorX) || isNaN(prob)) {
+                        mostrarError(`Los valores en la fila ${i + 1} deben ser numéricos.`);
+                        return;
+                    }
+                    if (prob < 0 || prob > 1) {
+                        mostrarError(`La probabilidad en la fila ${i + 1} (${prob}) debe estar entre 0 y 1.`);
+                        return;
+                    }
+                    
+                    valoresX.push(valorX);
+                    probabilidades.push(prob);
+                    sumaProb += prob;
+                }
+
+                if (valoresX.length === 0) {
+                    mostrarError("La tabla está vacía. Por favor, ingrese datos.");
+                    return;
+                }
+
+                if (Math.abs(sumaProb - 1) > 0.001) {
+                    mostrarError(`La suma de las probabilidades es ${sumaProb.toFixed(4)}, pero debe ser 1.`);
+                    return;
+                }
+
+                verificacionProb.textContent = '✅ La suma de probabilidades es 1. ¡Datos válidos!';
+                verificacionProb.className = 'success';
+
+                // 2. Calculate Statistics
+                let esperanza = 0;
+                valoresX.forEach((x, i) => {
+                    esperanza += x * probabilidades[i];
+                });
+
+                let varianza = 0;
+                valoresX.forEach((x, i) => {
+                    varianza += (x ** 2) * probabilidades[i];
+                });
+                varianza -= esperanza ** 2;
+
+                const desvio = Math.sqrt(varianza);
+
+                // 3. Display Results
+                resEsperanza.textContent = esperanza.toFixed(4);
+                resVarianza.textContent = varianza.toFixed(4);
+                resDesvio.textContent = desvio.toFixed(4);
+                
+                textoEsperanza.innerHTML = `En promedio, se espera un valor de <strong>${esperanza.toFixed(4)}</strong>.`;
+                textoDesvio.innerHTML = `Los valores se desvían, en promedio, <strong>${desvio.toFixed(4)}</strong> unidades de la media.`;
+
+                seccionResultados.style.display = 'block';
+                seccionGraficos.style.display = 'block';
+
+                // 4. Generate Charts
+                const ctxCuantia = document.getElementById('grafico-cuantia').getContext('2d');
+                if (chartCuantia) chartCuantia.destroy();
+                chartCuantia = new Chart(ctxCuantia, {
+                    type: 'bar',
+                    data: {
+                        labels: valoresX.map(String),
+                        datasets: [{
+                            label: 'Función de Cuantía p(x)',
+                            data: probabilidades,
+                            backgroundColor: 'rgba(0, 169, 224, 0.6)',
+                            borderColor: 'rgba(0, 169, 224, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: { y: { beginAtZero: true } },
+                        plugins: { title: { display: true, text: 'Función de Cuantía p(x)' } }
+                    }
+                });
+
+                let probAcumulada = 0;
+                const datosDistribucion = probabilidades.map(p => probAcumulada += p);
+                
+                const ctxDistribucion = document.getElementById('grafico-distribucion').getContext('2d');
+                if (chartDistribucion) chartDistribucion.destroy();
+                chartDistribucion = new Chart(ctxDistribucion, {
+                    type: 'line',
+                    data: {
+                        labels: valoresX.map(String),
+                        datasets: [{
+                            label: 'Función de Distribución F(x)',
+                            data: datosDistribucion,
+                            borderColor: 'rgba(0, 85, 140, 1)',
+                            backgroundColor: 'rgba(0, 85, 140, 0.2)',
+                            stepped: true,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        scales: { y: { beginAtZero: true, max: 1 } },
+                        plugins: { title: { display: true, text: 'Función de Distribución Acumulada F(x)' } }
+                    }
+                });
+
+                // 5. UX Enhancements
+                seccionResultados.scrollIntoView({ behavior: 'smooth' });
+                mostrarCtaWow();
+            }
+
+            // --- Event Listeners Setup ---
+            btnAddRow.addEventListener('click', agregarFila);
+            btnRemoveRow.addEventListener('click', eliminarFila);
+            btnCalcular.addEventListener('click', procesarDatos);
+            btnEjemplo.addEventListener('click', cargarYEvaluarEjemplo);
+            btnLimpiar.addEventListener('click', limpiarTodo);
+            
+            // --- Initial Load ---
+            cargarYEvaluarEjemplo();
+        });
+    </script>
+</body>
+</html>
