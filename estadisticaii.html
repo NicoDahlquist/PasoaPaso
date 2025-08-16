@@ -831,6 +831,48 @@
             transform: translateY(0);
         }
 
+        /* --- PEGA ESTE CÓDIGO NUEVO --- */
+
+        /* Controles del gráfico (botones y sliders) */
+        .chart-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px; /* Espacio entre elementos */
+            margin-bottom: 15px;
+        }
+        
+        /* Estilo base para los botones (estado inactivo) */
+        .chart-controls button {
+            padding: 8px 16px;
+            border-radius: 50px; /* Bordes redondeados */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            
+            /* Estilo para estado INACTIVO */
+            background-color: transparent;
+            border: 2px solid var(--border-color); /* Borde sutil gris */
+            color: var(--text-light); /* Texto grisáceo */
+        }
+        
+        /* Efecto al pasar el mouse sobre cualquier botón */
+        .chart-controls button:hover {
+            border-color: var(--accent-color); /* El borde se vuelve del color de acento */
+            color: var(--accent-color); /* El texto también */
+            transform: translateY(-2px);
+        }
+        
+        /* ESTILO CLAVE PARA EL BOTÓN ACTIVO */
+        .chart-controls button.active {
+            background-color: var(--accent-color); /* Fondo con el color de acento */
+            color: white; /* Texto blanco para contraste */
+            border-color: var(--accent-color); /* Borde del mismo color */
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3); /* Sombra con el color de acento */
+            transform: translateY(-2px); /* Efecto de elevación */
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
                 main {
@@ -981,28 +1023,6 @@
                     gap: 6px;
                     margin-bottom: 10px;
                     flex-shrink: 0; /* No se comprime */
-                }
-                
-                .chart-controls button {
-                    font-size: 0.85rem;
-                    padding: 8px 12px;
-                    white-space: nowrap;
-                    border: 1px solid var(--accent-color);
-                    background: var(--bg-color);
-                    color: var(--accent-color);
-                    border-radius: 20px;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                }
-
-                .chart-controls button:hover {
-                    background: var(--accent-color);
-                    color: white;
-                }
-
-                .chart-controls button.active {
-                    background: var(--accent-color);
-                    color: white;
                 }
                 
                 /* Configuración específica del canvas en móvil */
@@ -2065,6 +2085,7 @@
 </body>
 
 </html>
+
 
 
 
