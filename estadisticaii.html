@@ -1228,65 +1228,77 @@
         </nav>
 
         <main>
-            <!-- Resumen 1: Contenido Completo -->
+            <!-- Resumen 1: Contenido Optimizado -->
             <div id="summary-1" class="content-section active">
                 <h2>Unidad 1: Las Herramientas Clave (Distribuciones Chi², t y F)</h2>
-                <p>Hola! Si estás acá es porque empezaste Estadística II y ya te hablan en chino: Chi-cuadrado (χ²), t de Student y F de Snedecor. Tranqui, esto es más <strong class="intro-highlight">fácil de lo que parece</strong>. <br> Pensá en ellas como tres <strong class="intro-highlight">herramientas súper especializadas</strong> que vamos a usar para sacar conclusiones grosas a partir de datos. Todas nacen de la "navaja suiza" que ya conocés: la <strong class="intro-highlight">Distribución Normal</strong>. <br> Dominarlas ahora es la clave para no sufrir después.</p>
-
+                <p>Hola! Si estás acá es porque empezaste Estadística II y ya te hablan en chino: Chi-cuadrado (χ²), t de Student y F de Snedecor.</p>
+                <p>Tranqui, esto es más <strong class="intro-highlight">fácil de lo que parece</strong>. Pensá en ellas como tres <strong class="intro-highlight">herramientas súper especializadas</strong> que vamos a usar para sacar conclusiones grosas a partir de datos. Todas nacen de la "navaja suiza" que ya conocés: la <strong class="intro-highlight">Distribución Normal</strong>.</p>
+            
                 <h3>Los Conceptos Fundamentales (Desde Cero)</h3>
-                <p>En Estadística I usabas <strong>datos para describir una muestra</strong>. Ahora, en Inferencia Estadística, vamos a <strong class="intro-highlight">usar esa muestra para adivinar (inferir) cómo es toda la población</strong>. <br> Estas tres distribuciones son las reglas del juego que nos permiten hacer esas "adivinanzas" con una probabilidad de acierto medible.</p>
-
+                <p>En Estadística I usabas <strong>datos para describir una muestra</strong>. Ahora, en Inferencia Estadística, vamos a <strong class="intro-highlight">usar esa muestra para adivinar (inferir) cómo es toda la población</strong>.</p>
+            
                 <div class="receta-paso" style="border-left-color: #ffc107;">
-                    <strong style="color: #f0c648;">El Concepto Más Confuso: Grados de Libertad (gl)</strong>
-                    <p>Te lo van a nombrar todo el tiempo y es clave que lo entiendas. Imagina que tenés que elegir 3 números cuya media sea 10. Podés elegir los dos primeros libremente (por ejemplo, 5 y 10). Pero el tercero ya no es libre. Para que la media sea 10, el tercer número TIENE que ser 15. No hay otra opción. Tenías 3 números, pero solo 2 "grados de libertad" para elegir. En estadística, los <strong class="intro-highlight">grados de libertad son la cantidad de valores que pueden variar libremente</strong> después de que imponemos una condición (como conocer la media o la varianza de la muestra).</p>
+                    <strong style="color: #f0c648;">🧠 El Concepto Más Confuso: Grados de Libertad (gl)</strong>
+                    <p>Te lo van a nombrar todo el tiempo y es clave que lo entiendas.</p>
+                    <p><strong>Ejemplo simple:</strong> Tenés que elegir 3 números cuya media sea 10. Podés elegir los dos primeros libremente (5 y 10). Pero el tercero ya no es libre. Para que la media sea 10, el tercer número TIENE que ser 15.</p>
+                    <p>Tenías 3 números, pero solo 2 "grados de libertad" para elegir. Los <strong class="intro-highlight">grados de libertad son la cantidad de valores que pueden variar libremente</strong> después de que imponemos una condición.</p>
                 </div>
-
+            
                 <div class="receta-paso scroll-reveal" style="--animation-order: 1">
-                    <h2>1. Distribución Chi-cuadrado (χ²): La Lupa para las Varianzas 🔍</h2>
-                    <p><strong>¿Cuándo la usas?</strong> Principalmente cuando la pregunta del problema tiene que ver con la <strong class="intro-highlight">variabilidad o dispersión de UNA SOLA población</strong>. Es la herramienta para responder: "¿La varianza de mi muestra es consistente con la varianza que se supone que tiene la población?".</p>
-                    <p><strong>Ejemplo práctico:</strong> Una máquina llena paquetes de yerba de 500g. Obviamente, no todos pesan exactamente 500g. El fabricante dice que la varianza del peso es de 2g². Vos tomás una muestra y querés saber si la máquina sigue funcionando con esa variabilidad o si se descalibró. ¡Ahí usas Chi-cuadrado!</p>
-                    <ul>
-                        <li><strong>Características Clave:</strong> Siempre es positiva (¡porque es una suma de cosas al cuadrado!), es asimétrica hacia la derecha y su forma depende de los <strong class="intro-highlight">grados de libertad (gl)</strong>. A más `gl`, más se parece a una curva normal.</li>
-                    </ul>
+                    <h2>🔍 1. Chi-cuadrado (χ²): La Lupa para las Varianzas</h2>
+                    
+                    <p><strong>✅ Cuándo usarla:</strong> Preguntas sobre <strong class="intro-highlight">variabilidad de UNA SOLA población</strong></p>
+                    
+                    <p><strong>📊 Ejemplo práctico:</strong> Una máquina llena paquetes de yerba. El fabricante dice que la varianza del peso es de 2g². ¿La máquina sigue funcionando con esa variabilidad o se descalibró?</p>
+                    
+                    <p><strong>🔑 Características clave:</strong> Siempre positiva, asimétrica hacia la derecha, su forma depende de los grados de libertad.</p>
+                    
                     <div class="formula-container tooltip">
                         <div class="tooltip-content">
                             S²: varianza muestral, σ²: varianza poblacional, n: tamaño de muestra
                         </div>
                         $\chi^2 = \frac{(n-1)S^2}{\sigma^2}$
                     </div>
-                    <p style="font-style: italic; margin-top: 10px;"><strong>Traducción:</strong> Esta fórmula compara la variabilidad que encontraste en tu muestra (`(n-1)S²`) con la variabilidad que la población "debería" tener (`σ²`). Si son parecidas, el resultado estará cerca de los `gl`. Si son muy distintas, el valor de χ² se disparará.</p>
+                    
+                    <p style="font-style: italic;"><strong>En criollo:</strong> Compara la variabilidad de tu muestra vs la "teórica". Si son parecidas → χ² cerca de los gl. Si son muy distintas → χ² se dispara.</p>
                 </div>
-
+            
                 <div class="receta-paso scroll-reveal" style="--animation-order: 2">
-                    <h2>2. Distribución t de Student: La Navaja Suiza para la Media (cuando estás a ciegas) 🇨🇭</h2>
-                    <p><strong>¿Cuándo la usas?</strong> Es tu herramienta principal para hacer inferencias sobre la <strong class="intro-highlight">media de una población</strong> cuando (y esto es clave) <strong class="intro-highlight">NO conocés la varianza o desviación estándar de la población (σ)</strong>. Esto pasa el 99% de las veces en la vida real. Se usa típicamente con muestras pequeñas.</p>
-                    <p><strong>Ejemplo práctico:</strong> Querés saber si el tiempo promedio que tardan los estudiantes en completar un examen es de 60 minutos. Tomas una muestra de 15 estudiantes, pero no tenés idea de cuál es la desviación estándar de los tiempos de <strong class="intro-highlight">todos</strong> los estudiantes de la facultad. Usas la `S` de tu muestra y, por lo tanto, la distribución `t`.</p>
-                    <ul>
-                        <li><strong>Características Clave:</strong> Es simétrica como la Normal, pero más "chata" y con colas más "gordas". Esto significa que le da más probabilidad a los valores extremos, porque tiene en cuenta la <strong class="intro-highlight">incertidumbre extra</strong> de no conocer `σ`. A medida que los <strong class="intro-highlight">grados de libertad (gl)</strong> aumentan (n > 30), se vuelve prácticamente idéntica a la Normal.</li>
-                    </ul>
+                    <h2>🇨🇭 2. t de Student: Para Medias Sin Datos Completos</h2>
+                    
+                    <p><strong>✅ Cuándo usarla:</strong> Inferencias sobre la <strong class="intro-highlight">media cuando NO conocés σ</strong> (99% de la vida real)</p>
+                    
+                    <p><strong>📊 Ejemplo práctico:</strong> ¿Los estudiantes tardan 60 min promedio en un examen? Tomás 15 estudiantes, pero no sabés la desviación estándar de TODOS los estudiantes de la facu.</p>
+                    
+                    <p><strong>🔑 Características clave:</strong> Como la Normal pero más "gorda en las colas" (más probabilidad a valores extremos). Con n > 30 se vuelve prácticamente Normal.</p>
+                    
                     <div class="formula-container tooltip">
                         <div class="tooltip-content">
                             x̄: media muestral, μ: media poblacional, S: desviación estándar muestral, n: tamaño de muestra
                         </div>
                         $t = \frac{\bar{x} - \mu}{S / \sqrt{n}}$
                     </div>
-                    <p style="font-style: italic; margin-top: 10px;"><strong>Traducción:</strong> Es casi idéntica a la fórmula de Z que ya conocés. La única diferencia es que, como no tenés `σ` (el dato real de la población), usas `S` (la estimación que sacaste de tu muestra).</p>
+                    
+                    <p style="font-style: italic;"><strong>En criollo:</strong> Es tu Z de siempre, pero usando S (de tu muestra) en lugar de σ (que no conocés).</p>
                 </div>
-
+            
                 <div class="receta-paso scroll-reveal" style="--animation-order: 3">
-                    <h2>3. Distribución F de Snedecor: La Balanza para Comparar Varianzas ⚖️</h2>
-                    <p><strong>¿Cuándo la usas?</strong> Cuando la pregunta es si <strong class="intro-highlight">dos poblaciones tienen la misma variabilidad</strong>. Se define como el cociente (la división) entre dos variables Chi-cuadrado independientes.</p>
-                    <p><strong>Ejemplo práctico:</strong> Querés saber si una nueva máquina (Máquina A) es más consistente que la vieja (Máquina B) para llenar los paquetes de yerba. Tomarías una muestra de cada máquina y compararías sus varianzas usando la distribución F.</p>
-                    <ul>
-                        <li><strong>Características Clave:</strong> Solo toma valores positivos y es asimétrica a la derecha. Su forma depende de <strong class="intro-highlight">dos parámetros</strong>: los grados de libertad del numerador (`gl1`) y los del denominador (`gl2`).</li>
-                    </ul>
+                    <h2>⚖️ 3. F de Snedecor: Balanza Entre Varianzas</h2>
+                    
+                    <p><strong>✅ Cuándo usarla:</strong> Comparar si <strong class="intro-highlight">dos poblaciones tienen la misma variabilidad</strong></p>
+                    
+                    <p><strong>📊 Ejemplo práctico:</strong> ¿Qué máquina es más consistente para llenar paquetes, la A o la B? Comparás sus varianzas.</p>
+                    
+                    <p><strong>🔑 Características clave:</strong> Solo valores positivos, asimétrica a la derecha, depende de DOS grados de libertad (gl₁ y gl₂).</p>
+                    
                     <div class="formula-container tooltip">
                         <div class="tooltip-content">
                             S₁²: varianza muestral población 1, S₂²: varianza muestral población 2
                         </div>
                         $F = \frac{S_1^2}{S_2^2}$
                     </div>
-                    <p style="font-style: italic; margin-top: 10px;"><strong>Traducción:</strong> Esta es la versión simplificada para cuando la hipótesis es que las varianzas poblacionales son iguales. Simplemente es un ratio que compara la varianza de la muestra 1 con la de la muestra 2. Si son parecidas, el valor de F estará cerca de 1.</p>
+                    
+                    <p style="font-style: italic;"><strong>En criollo:</strong> Dividís una varianza por otra. Si son parecidas → F cerca de 1. Si son muy distintas → F se aleja de 1.</p>
                 </div>
                 
                 <div class="receta-paso scroll-reveal" style="--animation-order: 10">
@@ -1294,7 +1306,6 @@
                     <p>Jugá con los parámetros para entender cómo cambian las formas de cada distribución:</p>
                     
                     <div class="chart-container">
-                        
                         <div class="chart-controls">
                             <button onclick="showDistribution('chi2')" class="active" id="btn-chi2">Chi-cuadrado (χ²)</button>
                             <button onclick="showDistribution('t')" id="btn-t">t de Student</button>
@@ -1321,35 +1332,34 @@
                         <canvas id="distributionChart"></canvas>
                     </div>
                     
-                    <br>
-                    
-                    <p><strong>💡 Tip:</strong> Mové la barra azul para ver cómo los grados de libertad afectan la forma de cada distribución. ¡Es la mejor manera de entenderlas!</p>
+                    <p><strong>💡 Tip:</strong> Mové los sliders para ver cómo los grados de libertad afectan cada distribución. ¡Es la mejor manera de entenderlas!</p>
                 </div>
                 
-                <!-- Pega este bloque donde estaba el texto anterior -->
                 <div class="call-to-action">
-                    <h2>🎯 Imaginá tener esta misma claridad para <strong>CADA TEMA</strong> de la materia</h2>
-                    <p>Estas tres distribuciones no son solo el primer tema, son la <strong>BASE</strong> sobre la que se construye toda la materia. Si no dominas este pilar ahora, arrastrarás dudas todo el cuatrimestre.</p>
-                    <p>Esta guía te da el mapa, la teoría. En la <strong>Academia Paso a Paso</strong> te damos el acompañamiento para que llegues a destino:</p>
+                    <h2>🔥 ESTO ES SOLO EL COMIENZO</h2>
+                    <p>Estas tres distribuciones son la <strong>BASE</strong> de toda la materia. Si no las dominas ahora, arrastrarás dudas todo el cuatrimestre.</p>
+                    <p>Esta guía te da la teoría. En la <strong>Academia Paso a Paso</strong> te damos el acompañamiento completo:</p>
                     
                     <ul class="cta-features-list">
-                        <li><i class="fas fa-video"></i>  Clases prácticas online en vivo (y sus grabaciones) donde resolvemos las guías de la facu paso a paso durante toda la cursada, con grupos reducidos para que puedas interrumpir y <strong>preguntar sin miedo</strong>.</li>
-                        <li><i class="fas fa-chalkboard-teacher"></i>  Consultas presenciales: <strong>Resolvé tus dudas cara a cara, sin vueltas, cerca de la facu.</strong></li>
-                        <li><i class="fab fa-whatsapp"></i>  Soporte constante por WhatsApp para que <strong>nunca te trabes con un ejercicio</strong>.</li>
-                        <li><i class="fas fa-file-alt"></i>  Acceso a todos los <strong>SUPER-RESÚMENES</strong> de la materia a medida que salgan.</li>
-                        <li><i class="fas fa-award"></i>  Simulacro realista antes de cada parcial, con correcciones de nuestros profes, <strong>para que llegues al examen sabiendo exactamente qué esperar.</strong></li>
-                        <li><i class="fas fa-star"></i>  Consultas intensivas antes de cada parcial para pulir los últimos detalles.</li>
-                        <li><i class="fas fa-check-circle"></i>  <strong>Garantía de Aprobado:</strong> Estamos tan seguros de nuestro método que si no aprobás el final, <strong>podés recursar gratis con nosotros.</strong> Cero riesgo.</li>
-                        <li><i class="fas fa-hand-holding-usd"></i>  <strong>Facilidades de Pago:</strong> Para que el dinero no sea un problema, podés pagar el acompañamiento en <strong>hasta 3 cuotas.</strong></li>
+                        <li><i class="fas fa-video"></i> <strong>Clases paso a paso</strong> de TODOS los temas en vivo + grabaciones</li>
+                        <li><i class="fab fa-whatsapp"></i> <strong>WhatsApp 24/7</strong> para que nunca te trabes con un ejercicio</li>
+                        <li><i class="fas fa-chalkboard-teacher"></i> <strong>Consultas presenciales</strong> cara a cara, cerca de la facu</li>
+                        <li><i class="fas fa-award"></i> <strong>Simulacros reales</strong> antes de cada parcial con correcciones</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Garantía de Aprobado:</strong> Si no aprobás el final, cursás gratis con nosotros</li>
+                        <li><i class="fas fa-hand-holding-usd"></i> <strong>Pago en hasta 3 cuotas</strong> para que el dinero no sea problema</li>
                     </ul>
-                    <p><strong>Esta guía es solo el comienzo.</strong> Si te pareció útil, imagina lo que podemos lograr juntos para que no solo apruebes, sino que <strong>domines la materia.</strong></p>
-                    <div id="contador" style="font-size: 1.2em; color: rgb(228, 76, 76); font-weight: bold; margin: 10px 0;">
+                    
+                    <p><strong>¿Querés asegurar la materia?</strong></p>
+                    
+                    <div id="contador" style="font-size: 1.2em; color: rgb(228, 76, 76); font-weight: bold; margin: 15px 0;">
                         Subiremos el precio de inscripción en: <span id="tiempo-restante"></span>
                     </div>
                     
                     <a href="https://wa.me/5493541315608?text=Quiero%20Aprobar%20Estadistica%20II!%20Denme%20m%C3%A1s%20info" class="whatsapp-button" target="_blank">
                         <i class="fab fa-whatsapp"></i> ¡Quiero Aprobar! Denme más info!
                     </a>
+                </div>
+            </div>
                 </div>
             </footer>
             <script>
@@ -2065,4 +2075,5 @@
         </script>
 
 </body>
+
 </html>
