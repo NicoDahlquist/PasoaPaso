@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Maestra de Estadística II</title>
+    <script src="https://kit.fontawesome.com/6e3e233844.js" crossorigin="anonymous"></script>
+    <!-- Configuración ANTES del script -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\\[','\\]']]
+        },
+        chtml: { 
+            fontCache: 'global',
+            scale: 1.3  // Hace las fórmulas 30% más grandes
+        }  // usamos el renderer CHTML
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary-color: #64748b;
+            --accent-color: #06b6d4;
+            --accent-light: #0891b2;
+            --accent-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --bg-color: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --success-color: #10b981;
+            --warning-color: #ef4444;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        .intro-highlight {
+            background: linear-gradient(90deg, #60a5fa, #22d3ee); /* tonos más suaves */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600; /* un poco menos grueso */
+            animation: pulseHighlight 4s infinite; /* animación más lenta */
+        }
+
+        @keyframes pulseHighlight {
+            0%, 100% {
+                text-shadow: 0 0 2px rgba(59, 130, 246, 0.3); /* brillo más bajo */
+            }
+            50% {
+                text-shadow: 0 0 6px rgba(6, 182, 212, 0.4); /* menos intensidad */
+            }
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #f8fafc;
+            --primary-light: #e2e8f0;
+            --text-color: #e2e8f0;
+            --text-light: #94a3b8;
+            --bg-color: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --border-color: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #bae6fd 0%, #3b82f6 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y pinch-zoom;
+            overscroll-behavior: contain;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        /* Progreso de lectura */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent-gradient);
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        [data-theme="dark"] .container {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        header {
+            background: var(--accent-gradient);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 1px,
+                rgba(255, 255, 255, 0.05) 1px,
+                rgba(255, 255, 255, 0.05) 2px
+            );
+        }
+
+        header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.025em;
+            position: relative;
+            z-index: 1;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from {
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            }
+            to {
+                text-shadow: 0 2px 20px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .tabs::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            animation: expandLine 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes expandLine {
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            cursor: pointer;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: all 0.1s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-gradient);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .tab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-color);
+        }
+
+        .tab-button:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .tab-button.active {
+            background: var(--accent-gradient);
+            color: white;
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .tab-button.active::before {
+            left: 0;
+        }
+
+        /* Hamburger menu for mobile */
+        .mobile-menu-toggle {
+            display: none;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 12px;
+            padding: 10px 15px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin: 15px 20px 0;
+            width: calc(100% - 40px);
+            text-align: left;
+        }
+        
+        .mobile-menu-toggle i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        main {
+            padding: 40px 30px;
+            position: relative;
+        }
+
+        .content-section {
+            display: none;
+            animation: slideInFromRight 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section.slide-out-left {
+            animation: slideOutToLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .content-section.slide-in-right {
+            animation: slideInFromRight 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideInFromRight {
+            from { 
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutToLeft {
+            from { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to { 
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 4px solid var(--accent-color);
+            position: relative;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+            animation: expandHeight 0.8s ease-out 0.1s both;
+        }
+
+        @keyframes expandHeight {
+            from {
+                transform: scaleY(0);
+                transform-origin: top;
+            }
+            to {
+                transform: scaleY(1);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h3 {
+            color: var(--primary-light);
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin: 15px 0 15px;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        p {
+            color: var(--text-color);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        .receta-paso, .checklist-item, .error-item {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
+            padding: 24px;
+            margin-bottom: 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.1s ease;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .receta-paso::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            animation: expandWidth 0.6s ease-out 0.3s both;
+        }
+
+        @keyframes expandWidth {
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) rotateX(-10deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+
+        .receta-paso:hover, .checklist-item:hover {
+            transform: translateY(-4px) rotateX(2deg);
+            box-shadow: var(--shadow-lg);
+            border-left-color: var(--accent-light);
+        }
+
+        .receta-paso strong {
+            color: var(--primary-color);
+            display: inline;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .error-item {
+            border-left-color: var(--warning-color);
+            background: linear-gradient(135deg, rgba(254, 242, 242, 0.8) 0%, rgba(254, 226, 226, 0.8) 100%);
+        }
+
+        [data-theme="dark"] .error-item {
+            background: linear-gradient(135deg, rgba(127, 29, 29, 0.2) 0%, rgba(153, 27, 27, 0.2) 100%);
+        }
+
+        .error-item::before {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #dc2626 100%);
+        }
+        
+        .error-item strong {
+            color: var(--warning-color);
+        }
+
+        /* Fórmulas LaTeX mejoradas */
+        .formula-container {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            padding: 20px;
+            border-radius: 16px;
+            margin: 20px 0;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            overflow-x: auto; /* Para fórmulas largas en móvil */
+        }
+
+        .formula-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+
+        .formula-container:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-color);
+        }
+
+        .formula-container .formula-text {
+            font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 10px 0;
+        }
+
+        /* Tooltip para fórmulas */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip-content {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tooltip-content::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--primary-color) transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltip-content {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        ul {
+            margin: 16px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text-color);
+            line-height: 1.6;
+            position: relative;
+            animation: fadeInLeft 0.6s ease-out;
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .checklist-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist-item li {
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--success-color);
+            font-weight: bold;
+            font-size: 1.3rem;
+            animation: checkmark 0.6s ease-out;
+        }
+
+        @keyframes checkmark {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(-45deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(-45deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .checklist-item li:hover {
+            transform: translateX(5px);
+            color: var(--accent-color);
+        }
+
+        .call-to-action {
+            text-align: left;
+            padding: 50px 40px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 51, 234, 0.05) 100%);
+            border: 2px dashed var(--accent-color);
+            border-radius: 20px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(11, 151, 245, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(11, 245, 245, 0.4);
+            }
+        }
+
+        .call-to-action::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(14, 6, 82, 0.02) 10px,
+                rgba(245, 158, 11, 0.02) 20px
+            );
+            animation: float 100s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+        }
+
+        .call-to-action h2 {
+            border: none;
+            padding: 0;
+            color: var(--primary-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .call-to-action p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            border: none;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .whatsapp-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #128C7E 0%, #25D366 100%);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-4px) rotateX(5deg) scale(1.05);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-button:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        .whatsapp-button:hover::before {
+            left: 0;
+        }
+
+        .whatsapp-button i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-3px);
+            }
+            60% {
+                transform: translateY(-2px);
+            }
+        }
+
+        /* Loading animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Para espaciado limpio en receta-paso */
+        .receta-paso > *:last-child { 
+            margin-bottom: 0; 
+        }
+        
+        /* Advanced animations for content elements */
+        .receta-paso, .error-item, .checklist-item {
+            animation-delay: calc(var(--animation-order, 0) * 0.1s);
+        }
+
+        /* Scroll reveal animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+                main {
+                    touch-action: pan-y pinch-zoom;
+                    -webkit-overflow-scrolling: touch;
+                }
+                
+                .container {
+                    touch-action: pan-y pinch-zoom;
+                }
+            }
+            body {
+                padding: 10px;
+            }
+
+            .theme-toggle {
+                top: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .container {
+                border-radius: 16px;
+            }
+
+            header {
+                padding: 30px 20px;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 30px 20px;
+            }
+
+            .tabs {
+                padding: 15px;
+                gap: 6px;
+                flex-direction: column;
+                display: none; /* Oculto por defecto en móvil */
+                border-bottom: none; /* Quitar borde inferior en modo móvil */
+            }
+
+            .tabs.mobile-open {
+                display: flex; /* Se muestra al hacer clic en el toggle */
+            }
+
+            .mobile-menu-toggle {
+                display: flex; /* Visible en móvil */
+                align-items: center;
+            }
+
+            .tab-button {
+                padding: 12px 20px;
+                font-size: 1rem;
+                min-width: auto;
+                width: 100%;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            h3 {
+                font-size: 1.2rem;
+            }
+
+            .receta-paso, .checklist-item, .error-item {
+                padding: 20px;
+            }
+
+            .call-to-action {
+                padding: 40px 20px;
+            }
+            
+            .whatsapp-button {
+                padding: 14px 24px;
+                font-size: 1rem;
+            }
+
+            /* Touch gestures */
+            .content-section {
+                touch-action: pan-y pinch-zoom;
+            }
+
+/* Agregá estos estilos a tu CSS existente, reemplazando los estilos del .chart-container */
+
+/* Agregá estos estilos a tu CSS existente, reemplazando los estilos del .chart-container */
+
+/* Agregá estos estilos a tu CSS existente, reemplazando los estilos del .chart-container */
+/* Agregá estos estilos a tu CSS existente, reemplazando los estilos del .chart-container */
+
+            .chart-container {
+                margin: 20px 0;
+                position: relative;
+                height: 500px; /* Aumentado para dar más espacio */
+                max-height: 500px;
+                padding: 15px;
+                background: var(--bg-secondary);
+                border-radius: 12px;
+                box-shadow: var(--shadow-md);
+                display: flex;
+                flex-direction: column;
+                overflow: visible; /* Cambiado a visible para evitar cortes */
+            }
+
+            /* Contenedor específico para el canvas - ESTO ES CLAVE */
+            .chart-canvas-container {
+                flex-grow: 1;
+                position: relative;
+                min-height: 350px; /* Aumentado */
+                max-height: 400px; /* Aumentado */
+                margin: 10px 0;
+                overflow: visible; /* Cambiado a visible */
+            }
+
+            /* Estilos específicos para el canvas */
+            .chart-container canvas {
+                max-width: 100% !important;
+                max-height: 100% !important;
+                height: auto !important;
+                width: auto !important;
+            }
+
+            /* Para móviles - hacer más compacto pero visible */
+            @media (max-width: 768px) {
+                .chart-container {
+                    height: auto; /* Cambio clave: altura automática */
+                    min-height: 420px; /* Altura mínima garantizada */
+                    max-height: none; /* Sin límite máximo en móvil */
+                    padding: 10px;
+                    margin: 15px 0;
+                }
+                
+                .chart-canvas-container {
+                    min-height: 300px; /* Altura mínima más generosa */
+                    max-height: none; /* Sin límite en móvil */
+                    height: 320px; /* Altura fija para móvil */
+                    position: relative;
+                    overflow: visible;
+                }
+                
+                .chart-controls {
+                    flex-wrap: wrap;
+                    gap: 6px;
+                    margin-bottom: 10px;
+                    flex-shrink: 0; /* No se comprime */
+                }
+                
+                .chart-controls button {
+                    font-size: 0.85rem;
+                    padding: 8px 12px;
+                    white-space: nowrap;
+                }
+
+                .chart-controls button {
+                    padding: 8px 16px;
+                    border: 1px solid var(--accent-color);
+                    background: var(--bg-color);
+                    color: var(--accent-color);
+                    border-radius: 20px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+
+                .chart-controls button:hover {
+                    background: var(--accent-color);
+                    color: white;
+                }
+
+                .chart-controls button.active {
+                    background: var(--accent-color);
+                    color: white;
+                }
+                
+                /* Configuración específica del canvas en móvil */
+                .chart-container canvas {
+                    max-width: 100% !important;
+                    height: 300px !important; /* Altura fija para el canvas en móvil */
+                    max-height: none !important;
+                }
+                
+                /* Resultado box más compacto en móvil */
+                .result-box {
+                    margin-top: 10px;
+                    padding: 15px;
+                    min-height: 60px;
+                    font-size: 0.9rem;
+                }
+            }
+
+            /* 🔄 ORIENTACIÓN HORIZONTAL EN MÓVIL - ¡AQUÍ ESTÁ LA MAGIA! */
+            @media (max-width: 768px) and (orientation: landscape) {
+                body {
+                    padding: 5px; /* Menos padding general */
+                }
+                
+                .container {
+                    margin: 5px 0; /* Menos margen del container principal */
+                }
+                
+                header {
+                    padding: 20px 30px; /* Header más compacto */
+                }
+                
+                header h1 {
+                    font-size: 1.8rem; /* Título más pequeño */
+                    margin: 0;
+                }
+                
+                main {
+                    padding: 20px 15px; /* Menos padding en main */
+                }
+                
+                .chart-container {
+                    height: auto;
+                    min-height: 280px; /* Menor altura mínima en horizontal */
+                    max-height: none;
+                    padding: 8px; /* Padding más ajustado */
+                    margin: 10px 0; /* Menos margen */
+                }
+                
+                .chart-canvas-container {
+                    height: 240px; /* Altura optimizada para horizontal */
+                    min-height: 220px;
+                    max-height: none;
+                    margin: 5px 0; /* Menos margen */
+                }
+                
+                .chart-container canvas {
+                    height: 220px !important; /* Canvas más compacto pero visible */
+                    max-width: 100% !important;
+                }
+                
+                .chart-controls {
+                    gap: 4px;
+                    margin-bottom: 8px;
+                    justify-content: center; /* Centrar botones */
+                }
+                
+                .chart-controls button {
+                    font-size: 0.8rem;
+                    padding: 6px 10px; /* Botones más compactos */
+                }
+                
+                /* Sliders más compactos en horizontal */
+                .chart-controls input[type="range"] {
+                    width: 120px; /* Sliders más cortos */
+                }
+                
+                .chart-controls label {
+                    font-size: 0.8rem;
+                    margin: 0 8px;
+                }
+                
+                /* Result box más compacto */
+                .result-box {
+                    margin-top: 8px;
+                    padding: 12px;
+                    min-height: 50px;
+                    font-size: 0.85rem;
+                }
+                
+                .result-box strong {
+                    font-size: 1rem;
+                }
+                
+                /* Receta pasos más compactos en horizontal */
+                .receta-paso {
+                    padding: 15px;
+                    margin-bottom: 15px;
+                }
+                
+                /* Tabs más compactos */
+                .tabs {
+                    padding: 10px;
+                    gap: 4px;
+                }
+                
+                .tab-button {
+                    padding: 8px 15px;
+                    font-size: 0.8rem;
+                    min-width: 100px;
+                }
+            }
+            /* Estilos para el div de resultado */
+            .result-box {
+                margin-top: 15px;
+                padding: 20px;
+                border-radius: 12px;
+                font-weight: 500;
+                border: 2px solid;
+                text-align: center;
+                flex-shrink: 0;
+                min-height: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                line-height: 1.4;
+                font-size: 0.95rem;
+            }
+
+            .result-box strong {
+                display: block;
+                margin-bottom: 5px;
+                font-size: 1.1rem;
+            }
+
+            .result-box em {
+                font-size: 0.9rem;
+                opacity: 0.9;
+            }
+
+            .result-box.default {
+                background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+                color: var(--text-color);
+                border-color: var(--border-color);
+            }
+
+            .result-box.success {
+                background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+                color: #065f46;
+                border-color: #10b981;
+                box-shadow: 0 4px 6px rgba(16, 185, 129, 0.1);
+            }
+
+            .result-box.error {
+                background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+                color: #b91c1c;
+                border-color: #ef4444;
+                box-shadow: 0 4px 6px rgba(239, 68, 68, 0.1);
+            }
+
+            /* Tema oscuro mejorado */
+            [data-theme="dark"] .result-box.default {
+                background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+                color: var(--text-light);
+                border-color: var(--border-color);
+            }
+
+            [data-theme="dark"] .result-box.success {
+                background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.3) 100%);
+                color: #34d399;
+                border-color: #10b981;
+            }
+
+            [data-theme="dark"] .result-box.error {
+                background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.3) 100%);
+                color: #f87171;
+                border-color: #ef4444;
+            }
+
+            .chart-canvas-container {
+                flex-grow: 1;
+                position: relative;
+                min-height: 280px;
+                margin: 10px 0;
+            }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+        <header>
+            <h1>SuperResúmenes Paso a Paso - Estadística II</h1>
+        </header>
+
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i> Ver todos los SuperResúmenes
+        </button>
+
+        <nav class="tabs" id="tabsContainer">
+            <button class="tab-button active" onclick="showSummary(1)">Resumen 1</button>
+            <button class="tab-button" onclick="showSummary(2)">Resumen 2</button>
+            <button class="tab-button" onclick="showSummary(3)">Resumen 3</button>
+            <button class="tab-button" onclick="showSummary(4)">Resumen 4</button>
+            <button class="tab-button" onclick="showSummary(5)">Resumen 5</button>
+            <button class="tab-button" onclick="showSummary(6)">Resumen 6</button>
+            <button class="tab-button" onclick="showSummary(7)">Resumen 7</button>
+            <button class="tab-button" onclick="showSummary(8)">Resumen 8</button>
+            <button class="tab-button" onclick="showSummary(9)">Resumen 9</button>
+        </nav>
+
+        <main>
+            <!-- Resumen 1: Contenido Completo -->
+            <div id="summary-1" class="content-section active">
+                <h2>Unidad 1: Las Herramientas Clave (Distribuciones Chi², t y F)</h2>
+                <p>Hola! Si estás acá es porque empezaste Estadística II y ya te hablan en chino: Chi-cuadrado (χ²), t de Student y F de Snedecor. Tranqui, esto es más <strong class="intro-highlight">fácil de lo que parece</strong>. <br> Pensá en ellas como tres <strong class="intro-highlight">herramientas súper especializadas</strong> que vamos a usar para sacar conclusiones grosas a partir de datos. Todas nacen de la "navaja suiza" que ya conocés: la <strong class="intro-highlight">Distribución Normal</strong>. <br> Dominarlas ahora es la clave para no sufrir después.</p>
+
+                <h3>Los Conceptos Fundamentales (Desde Cero)</h3>
+                <p>En Estadística I usabas <strong>datos para describir una muestra</strong>. Ahora, en Inferencia Estadística, vamos a <strong class="intro-highlight">usar esa muestra para adivinar (inferir) cómo es toda la población</strong>. <br> Estas tres distribuciones son las reglas del juego que nos permiten hacer esas "adivinanzas" con una probabilidad de acierto medible.</p>
+
+                <div class="receta-paso" style="border-left-color: #ffc107;">
+                    <strong style="color: #f0c648;">El Concepto Más Confuso: Grados de Libertad (gl)</strong>
+                    <p>Te lo van a nombrar todo el tiempo y es clave que lo entiendas. Imagina que tenés que elegir 3 números cuya media sea 10. Podés elegir los dos primeros libremente (por ejemplo, 5 y 10). Pero el tercero ya no es libre. Para que la media sea 10, el tercer número TIENE que ser 15. No hay otra opción. Tenías 3 números, pero solo 2 "grados de libertad" para elegir. En estadística, los <strong class="intro-highlight">grados de libertad son la cantidad de valores que pueden variar libremente</strong> después de que imponemos una condición (como conocer la media o la varianza de la muestra).</p>
+                </div>
+
+                <div class="receta-paso scroll-reveal" style="--animation-order: 1">
+                    <h2>1. Distribución Chi-cuadrado (χ²): La Lupa para las Varianzas 🔍</h2>
+                    <p><strong>¿Cuándo la usas?</strong> Principalmente cuando la pregunta del problema tiene que ver con la <strong class="intro-highlight">variabilidad o dispersión de UNA SOLA población</strong>. Es la herramienta para responder: "¿La varianza de mi muestra es consistente con la varianza que se supone que tiene la población?".</p>
+                    <p><strong>Ejemplo práctico:</strong> Una máquina llena paquetes de yerba de 500g. Obviamente, no todos pesan exactamente 500g. El fabricante dice que la varianza del peso es de 2g². Vos tomás una muestra y querés saber si la máquina sigue funcionando con esa variabilidad o si se descalibró. ¡Ahí usas Chi-cuadrado!</p>
+                    <ul>
+                        <li><strong>Características Clave:</strong> Siempre es positiva (¡porque es una suma de cosas al cuadrado!), es asimétrica hacia la derecha y su forma depende de los <strong class="intro-highlight">grados de libertad (gl)</strong>. A más `gl`, más se parece a una curva normal.</li>
+                    </ul>
+                    <div class="formula-container tooltip">
+                        <div class="tooltip-content">
+                            S²: varianza muestral, σ²: varianza poblacional, n: tamaño de muestra
+                        </div>
+                        $\chi^2 = \frac{(n-1)S^2}{\sigma^2}$
+                    </div>
+                    <p style="font-style: italic; margin-top: 10px;"><strong>Traducción:</strong> Esta fórmula compara la variabilidad que encontraste en tu muestra (`(n-1)S²`) con la variabilidad que la población "debería" tener (`σ²`). Si son parecidas, el resultado estará cerca de los `gl`. Si son muy distintas, el valor de χ² se disparará.</p>
+                </div>
+
+                <div class="receta-paso scroll-reveal" style="--animation-order: 2">
+                    <h2>2. Distribución t de Student: La Navaja Suiza para la Media (cuando estás a ciegas) 🇨🇭</h2>
+                    <p><strong>¿Cuándo la usas?</strong> Es tu herramienta principal para hacer inferencias sobre la <strong class="intro-highlight">media de una población</strong> cuando (y esto es clave) <strong class="intro-highlight">NO conocés la varianza o desviación estándar de la población (σ)</strong>. Esto pasa el 99% de las veces en la vida real. Se usa típicamente con muestras pequeñas.</p>
+                    <p><strong>Ejemplo práctico:</strong> Querés saber si el tiempo promedio que tardan los estudiantes en completar un examen es de 60 minutos. Tomas una muestra de 15 estudiantes, pero no tenés idea de cuál es la desviación estándar de los tiempos de <strong class="intro-highlight">todos</strong> los estudiantes de la facultad. Usas la `S` de tu muestra y, por lo tanto, la distribución `t`.</p>
+                    <ul>
+                        <li><strong>Características Clave:</strong> Es simétrica como la Normal, pero más "chata" y con colas más "gordas". Esto significa que le da más probabilidad a los valores extremos, porque tiene en cuenta la <strong class="intro-highlight">incertidumbre extra</strong> de no conocer `σ`. A medida que los <strong class="intro-highlight">grados de libertad (gl)</strong> aumentan (n > 30), se vuelve prácticamente idéntica a la Normal.</li>
+                    </ul>
+                    <div class="formula-container tooltip">
+                        <div class="tooltip-content">
+                            x̄: media muestral, μ: media poblacional, S: desviación estándar muestral, n: tamaño de muestra
+                        </div>
+                        $t = \frac{\bar{x} - \mu}{S / \sqrt{n}}$
+                    </div>
+                    <p style="font-style: italic; margin-top: 10px;"><strong>Traducción:</strong> Es casi idéntica a la fórmula de Z que ya conocés. La única diferencia es que, como no tenés `σ` (el dato real de la población), usas `S` (la estimación que sacaste de tu muestra).</p>
+                </div>
+
+                <div class="receta-paso scroll-reveal" style="--animation-order: 3">
+                    <h2>3. Distribución F de Snedecor: La Balanza para Comparar Varianzas ⚖️</h2>
+                    <p><strong>¿Cuándo la usas?</strong> Cuando la pregunta es si <strong class="intro-highlight">dos poblaciones tienen la misma variabilidad</strong>. Se define como el cociente (la división) entre dos variables Chi-cuadrado independientes.</p>
+                    <p><strong>Ejemplo práctico:</strong> Querés saber si una nueva máquina (Máquina A) es más consistente que la vieja (Máquina B) para llenar los paquetes de yerba. Tomarías una muestra de cada máquina y compararías sus varianzas usando la distribución F.</p>
+                    <ul>
+                        <li><strong>Características Clave:</strong> Solo toma valores positivos y es asimétrica a la derecha. Su forma depende de <strong class="intro-highlight">dos parámetros</strong>: los grados de libertad del numerador (`gl1`) y los del denominador (`gl2`).</li>
+                    </ul>
+                    <div class="formula-container tooltip">
+                        <div class="tooltip-content">
+                            S₁²: varianza muestral población 1, S₂²: varianza muestral población 2
+                        </div>
+                        $F = \frac{S_1^2}{S_2^2}$
+                    </div>
+                    <p style="font-style: italic; margin-top: 10px;"><strong>Traducción:</strong> Esta es la versión simplificada para cuando la hipótesis es que las varianzas poblacionales son iguales. Simplemente es un ratio que compara la varianza de la muestra 1 con la de la muestra 2. Si son parecidas, el valor de F estará cerca de 1.</p>
+                </div>
+                
+                <div class="receta-paso scroll-reveal" style="--animation-order: 10">
+                    <h3>🎯 Visualiza las Distribuciones Interactivamente</h3>
+                    <p>Jugá con los parámetros para entender cómo cambian las formas de cada distribución:</p>
+                    
+                    <div class="chart-container">
+                        
+                        <div class="chart-controls">
+                            <button onclick="showDistribution('chi2')" class="active" id="btn-chi2">Chi-cuadrado (χ²)</button>
+                            <button onclick="showDistribution('t')" id="btn-t">t de Student</button>
+                            <button onclick="showDistribution('f')" id="btn-f">F de Snedecor</button>
+                        </div>
+                        
+                        <div id="chi2-controls" class="chart-controls">
+                            <label>Grados de libertad: <span id="chi2-gl-value">5</span></label>
+                            <input type="range" id="chi2-gl" min="1" max="20" value="5" oninput="updateChi2Chart()">
+                        </div>
+                        
+                        <div id="t-controls" class="chart-controls" style="display:none;">
+                            <label>Grados de libertad: <span id="t-gl-value">5</span></label>
+                            <input type="range" id="t-gl" min="1" max="30" value="5" oninput="updateTChart()">
+                        </div>
+                        
+                        <div id="f-controls" class="chart-controls" style="display:none;">
+                            <label>gl₁: <span id="f-gl1-value">5</span></label>
+                            <input type="range" id="f-gl1" min="1" max="20" value="5" oninput="updateFChart()">
+                            <label>gl₂: <span id="f-gl2-value">10</span></label>
+                            <input type="range" id="f-gl2" min="1" max="30" value="10" oninput="updateFChart()">
+                        </div>
+                        
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                    
+                    <br>
+                    
+                    <p><strong>💡 Tip:</strong> Mové la barra azul para ver cómo los grados de libertad afectan la forma de cada distribución. ¡Es la mejor manera de entenderlas!</p>
+                </div>
+                
+                <!-- Pega este bloque donde estaba el texto anterior -->
+                <div class="call-to-action">
+                    <h2>🎯 Imaginá tener esta misma claridad para <strong>CADA TEMA</strong> de la materia</h2>
+                    <p>Estas tres distribuciones no son solo el primer tema, son la <strong>BASE</strong> sobre la que se construye toda la materia. Si no dominas este pilar ahora, arrastrarás dudas todo el cuatrimestre.</p>
+                    <p>Esta guía te da el mapa, la teoría. En la <strong>Academia Paso a Paso</strong> te damos el acompañamiento para que llegues a destino:</p>
+                    
+                    <ul class="cta-features-list">
+                        <li><i class="fas fa-video"></i>  Clases prácticas online en vivo (y sus grabaciones) donde resolvemos las guías de la facu paso a paso durante toda la cursada, con grupos reducidos para que puedas interrumpir y <strong>preguntar sin miedo</strong>.</li>
+                        <li><i class="fas fa-chalkboard-teacher"></i>  Consultas presenciales: <strong>Resolvé tus dudas cara a cara, sin vueltas, cerca de la facu.</strong></li>
+                        <li><i class="fab fa-whatsapp"></i>  Soporte constante por WhatsApp para que <strong>nunca te trabes con un ejercicio</strong>.</li>
+                        <li><i class="fas fa-file-alt"></i>  Acceso a todos los <strong>SUPER-RESÚMENES</strong> de la materia a medida que salgan.</li>
+                        <li><i class="fas fa-award"></i>  Simulacro realista antes de cada parcial, con correcciones de nuestros profes, <strong>para que llegues al examen sabiendo exactamente qué esperar.</strong></li>
+                        <li><i class="fas fa-star"></i>  Consultas intensivas antes de cada parcial para pulir los últimos detalles.</li>
+                        <li><i class="fas fa-check-circle"></i>  <strong>Garantía de Aprobado:</strong> Estamos tan seguros de nuestro método que si no aprobás el final, <strong>podés recursar gratis con nosotros.</strong> Cero riesgo.</li>
+                        <li><i class="fas fa-hand-holding-usd"></i>  <strong>Facilidades de Pago:</strong> Para que el dinero no sea un problema, podés pagar el acompañamiento en <strong>hasta 3 cuotas.</strong></li>
+                    </ul>
+                    <p><strong>Esta guía es solo el comienzo.</strong> Si te pareció útil, imagina lo que podemos lograr juntos para que no solo apruebes, sino que <strong>domines la materia.</strong></p>
+                    <div id="contador" style="font-size: 1.2em; color: rgb(228, 76, 76); font-weight: bold; margin: 10px 0;">
+                        Subiremos el precio de inscripción en: <span id="tiempo-restante"></span>
+                    </div>
+                    
+                    <a href="https://wa.me/5493541315608?text=Quiero%20Aprobar%20Estadistica%20II!%20Denme%20m%C3%A1s%20info" class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i> ¡Quiero Aprobar! Denme más info!
+                    </a>
+                </div>
+            </footer>
+            <script>
+                function actualizarContador() {
+                    const fin = new Date("2025-08-21T19:00:00").getTime();
+                    const ahora = new Date().getTime();
+                    const diferencia = fin - ahora;
+                    
+                    if (diferencia <= 0) {
+                        document.getElementById("tiempo-restante").innerHTML = "¡La oferta terminó! Consultanos si queda lugar antes de que se acaben!!";
+                        return;
+                    }
+                    
+                    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+                    const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+                    const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+                    
+                    document.getElementById("tiempo-restante").innerHTML =
+                    `${dias} días ${horas} horas ${minutos} mins ${segundos} segs`;
+                }
+                
+                setInterval(actualizarContador, 1000);
+                actualizarContador();
+                </script>
+            </div>
+
+            <!-- Resúmenes 2 al 9: Call to Action -->
+            <div id="summary-2" class="content-section">
+                <div class="call-to-action">
+                    <h2>Resumen 2: Teoría de la Estimación (Próximamente)</h2>
+                    <p>Estos meses estaremos armando el resto de los super-resúmenes a medida que avance la cursada. Queremos que tengas el mejor material para aprobar! Si querés que te los pasemos cuando estén listos o saber más de cómo podemos hacerte aprobar esta materia, pedinos info por WhatsApp!</p>
+                    <a href="https://wa.me/5493541315608?text=Hola%2C%20quiero%20mas%20info%20sobre%20los%20super-resumenes%20y%20el%20apoyo%20que%20dan%20en%20estadistica%20ii" class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Pedir Info
+                    </a>
+                </div>
+            </div>
+
+            <div id="summary-3" class="content-section">
+                <div class="call-to-action">
+                    <h2>Resumen 3: Muestreo y Métodos de Muestreo (Próximamente)</h2>
+                    <p>Estos meses estaremos armando el resto de los super-resúmenes a medida que avance la cursada. Queremos que tengas el mejor material para aprobar! Si querés que te los pasemos cuando estén listos o saber más de cómo podemos hacerte aprobar esta materia, pedinos info por WhatsApp!</p>
+                    <a href="https://wa.me/5493541315608?text=Hola%2C%20quiero%20mas%20info%20sobre%20los%20super-resumenes%20y%20el%20apoyo%20que%20dan%20en%20estadistica%20ii" class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Pedir Info
+                    </a>
+                </div>
+            </div>
+
+            <div id="summary-4" class="content-section">
+                <div class="call-to-action">
+                    <h2>Resumen 4: Contraste de Hipótesis (Próximamente)</h2>
+                    <p>Estos meses estaremos armando el resto de los super-resúmenes a medida que avance la cursada. Queremos que tengas el mejor material para aprobar! Si querés que te los pasemos cuando estén listos o saber más de cómo podemos hacerte aprobar esta materia, pedinos info por WhatsApp!</p>
+                    <a href="https://wa.me/5493541315608?text=Hola%2C%20quiero%20mas%20info%20sobre%20los%20super-resumenes%20y%20el%20apoyo%20que%20dan%20en%20estadistica%20ii" class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Pedir Info
+                    </a>
+                </div>
+            </div>
+
+            <div id="summary-5" class="content-section">
+                <div class="call-to-action">
+                    <h2>Resumen 5: Inferencia para dos o más poblaciones (Próximamente)</h2>
+                    <p>Estos meses estaremos armando el resto de los super-resúmenes a medida que avance la cursada. Queremos que tengas el mejor material para aprobar! Si querés que te los pasemos cuando estén listos o saber más de cómo podemos hacerte aprobar esta materia, pedinos info por WhatsApp!</p>
+                    <a href="https://wa.me/5493541315608?text=Hola%2C%20quiero%20mas%20info%20sobre%20los%20super-resumenes%20y%20el%20apoyo%20que%20dan%20en%20estadistica%20ii" class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Pedir Info
+                    </a>
+                </div>
+            </div>
+
+            <div id="summary-6" class="content-section">
+                <div class="call-to-action">
+                    <h2>Resumen 6: Procedimientos no Paramétricos (Próximamente)</h2>
+                    <p>Estos meses estaremos armando el resto de los super-resúmenes a medida que avance la cursada. Queremos que tengas el mejor material para aprobar! Si querés que te los pasemos cuando estén listos o saber más de cómo podemos hacerte aprobar esta materia, pedinos info por WhatsApp!</p>
+                    <a href="https://wa.me/5493541315608?text=Hola%2C%20quiero%20mas%20info%20sobre%20los%20super-resumenes%20y%20el%20apoyo%20que%20dan%20en%20estadistica%20ii" class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Pedir Info
+                    </a>
+                </div>
+            </div>
+
+            <div id="summary-7" class="content-section">
+                <div class="call-to-action">
+                    <h2>Resumen 7: Regresión Lineal y Correlación (Próximamente)</h2>
+                    <p>Estos meses estaremos armando el resto de los super-resúmenes a medida que avance la cursada. Queremos que tengas el mejor material para aprobar! Si querés que te los pasemos cuando estén listos o saber más de cómo podemos hacerte aprobar esta materia, pedinos info por WhatsApp!</p>
+                    <a href="https://wa.me/5493541315608?text=Hola%2C%20quiero%20mas%20info%20sobre%20los%20super-resumenes%20y%20el%20apoyo%20que%20dan%20en%20estadistica%20ii" class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Pedir Info
+                    </a>
+                </div>
+            </div>
+
+            <div id="summary-8" class="content-section">
+                <div class="call-to-action">
+                    <h2>Resumen 8: Series de Tiempo (Próximamente)</h2>
+                    <p>Estos meses estaremos armando el resto de los super-resúmenes a medida que avance la cursada. Queremos que tengas el mejor material para aprobar! Si querés que te los pasemos cuando estén listos o saber más de cómo podemos hacerte aprobar esta materia, pedinos info por WhatsApp!</p>
+                    <a href="https://wa.me/5493541315608?text=Hola%2C%20quiero%20mas%20info%20sobre%20los%20super-resumenes%20y%20el%20apoyo%20que%20dan%20en%20estadistica%20ii" class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Pedir Info
+                    </a>
+                </div>
+            </div>
+
+            <div id="summary-9" class="content-section">
+                <div class="call-to-action">
+                    <h2>Resumen 9: Control Estadístico de Calidad (Próximamente)</h2>
+                    <p>Estos meses estaremos armando el resto de los super-resúmenes a medida que avance la cursada. Queremos que tengas el mejor material para aprobar! Si querés que te los pasemos cuando estén listos o saber más de cómo podemos hacerte aprobar esta materia, pedinos info por WhatsApp!</p>
+                    <a href="https://wa.me/5493541315608?text=Hola%2C%20quiero%20mas%20info%20sobre%20los%20super-resumenes%20y%20el%20apoyo%20que%20dan%20en%20estadistica%20ii" class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Pedir Info
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Configurar MathJax (ya está configurado en el head)
+        // Variables globales
+        let currentSection = 1;
+        let isDarkMode = false;
+
+        // Inicialización cuando se carga la página
+        window.addEventListener('load', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // Ocultar loading overlay
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            }, 1000);
+            
+            // Configurar theme toggle
+            setupThemeToggle();
+            
+            // Configurar mobile menu
+            setupMobileMenu();
+            
+            // Configurar scroll animations
+            setupScrollAnimations();
+            
+            // Configurar reading progress
+            setupReadingProgress();
+            
+            // Configurar touch gestures para móvil
+            setupTouchGestures();
+
+            // Revelar elementos al scroll
+            revealOnScroll();
+        }
+
+        function setupThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            // Detectar preferencia del sistema
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                toggleTheme();
+            }
+
+            themeToggle.addEventListener('click', toggleTheme);
+
+            function toggleTheme() {
+                isDarkMode = !isDarkMode;
+                body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+                themeToggle.innerHTML = isDarkMode ? '☀️' : '🌙';
+                themeToggle.title = isDarkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+                
+                // Actualizar colores de los gráficos
+                updateChartsTheme();
+                
+                // Guardar preferencia
+                localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            }
+
+            // Cargar tema guardado
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                isDarkMode = savedTheme === 'dark';
+                body.setAttribute('data-theme', savedTheme);
+                themeToggle.innerHTML = isDarkMode ? '☀️' : '🌙';
+                // Actualizar gráficos si ya están inicializados
+                setTimeout(() => {
+                    updateChartsTheme();
+                }, 100);
+            }
+        }
+
+            function updateChartsTheme() {
+                // Solo actualizar si los gráficos ya están inicializados
+                if (!distributionChart) return;
+                
+                const textColor = isDarkMode ? '#e2e8f0' : '#1e293b';
+                const gridColor = isDarkMode ? 'rgba(226, 232, 240, 0.2)' : 'rgba(0, 0, 0, 0.1)';
+                const tooltipBg = isDarkMode ? 'rgba(30, 41, 59, 0.95)' : 'rgba(0, 0, 0, 0.8)';
+                
+                // Actualizar gráfico de distribuciones
+                distributionChart.options.plugins.title.color = textColor;
+                distributionChart.options.plugins.legend.labels.color = textColor;
+                distributionChart.options.plugins.tooltip.backgroundColor = tooltipBg;
+                distributionChart.options.scales.x.title.color = textColor;
+                distributionChart.options.scales.x.ticks.color = textColor;
+                distributionChart.options.scales.x.grid.color = gridColor;
+                distributionChart.options.scales.y.title.color = textColor;
+                distributionChart.options.scales.y.ticks.color = textColor;
+                distributionChart.options.scales.y.grid.color = gridColor;
+                
+                // Aplicar los cambios
+                distributionChart.update('none');
+            }
+
+        function setupMobileMenu() {
+            const mobileToggle = document.getElementById('mobileMenuToggle');
+            const tabsContainer = document.getElementById('tabsContainer');
+
+            mobileToggle.addEventListener('click', function() {
+                tabsContainer.classList.toggle('mobile-open');
+                const icon = mobileToggle.querySelector('i');
+                icon.className = tabsContainer.classList.contains('mobile-open') ? 
+                    'fas fa-times' : 'fas fa-bars';
+            });
+        }
+
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        function setupReadingProgress() {
+            const progressBar = document.getElementById('readingProgress');
+            let ticking = false;
+            
+            function updateProgress() {
+                const scrollTop = window.pageYOffset;
+                const docHeight = document.body.offsetHeight - window.innerHeight;
+                const scrollPercent = (scrollTop / docHeight) * 100;
+                progressBar.style.width = Math.min(scrollPercent, 100) + '%';
+                ticking = false;
+            }
+            
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(updateProgress);
+                    ticking = true;
+                }
+            }, { passive: true });
+        }
+
+        function setupTouchGestures() {
+            let startX = 0;
+            let startY = 0;
+            let isHorizontalSwipe = false;
+            const mainContent = document.querySelector('main');
+            
+            mainContent.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                isHorizontalSwipe = false;
+            }, { passive: true });
+
+            mainContent.addEventListener('touchmove', (e) => {
+                if (!startX || !startY) return;
+                
+                const currentX = e.touches[0].clientX;
+                const currentY = e.touches[0].clientY;
+                
+                const diffX = Math.abs(startX - currentX);
+                const diffY = Math.abs(startY - currentY);
+                
+                // Solo activar swipe horizontal si el movimiento horizontal es mayor que el vertical
+                if (diffX > diffY && diffX > 30) {
+                    isHorizontalSwipe = true;
+                }
+            }, { passive: true });
+
+            mainContent.addEventListener('touchend', (e) => {
+                if (!isHorizontalSwipe) return;
+                
+                const endX = e.changedTouches[0].clientX;
+                const diffX = startX - endX;
+
+                if (Math.abs(diffX) > 100) { // Aumentado a 100px para ser más preciso
+                    if (diffX > 0 && currentSection < 9) {
+                        showSummary(currentSection + 1);
+                    } else if (diffX < 0 && currentSection > 1) {
+                        showSummary(currentSection - 1);
+                    }
+                }
+                
+                // Reset values
+                startX = 0;
+                startY = 0;
+                isHorizontalSwipe = false;
+            }, { passive: true });
+        }
+
+        function revealOnScroll() {
+            const elements = document.querySelectorAll('.scroll-reveal');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('revealed');
+                        }, index * 100);
+                    }
+                });
+            });
+
+            elements.forEach(el => observer.observe(el));
+        }
+
+        function showSummary(summaryNumber) {
+            if (summaryNumber === currentSection) return; // No hacer nada si ya está activa
+
+            const currentActive = document.querySelector('.content-section.active');
+            if (currentActive) {
+                currentActive.classList.add('slide-out-left');
+                setTimeout(() => {
+                    currentActive.classList.remove('active', 'slide-out-left');
+                }, 400);
+            }
+
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            setTimeout(() => {
+                const selectedSection = document.getElementById('summary-' + summaryNumber);
+                selectedSection.classList.add('active', 'slide-in-right');
+                
+                // Scroll suave al inicio del contenido
+                const headerHeight = document.querySelector('header').offsetHeight;
+                window.scrollTo({
+                    top: selectedSection.offsetTop - headerHeight - 20,
+                    behavior: 'smooth'
+                });
+
+                const scrollElements = selectedSection.querySelectorAll('.scroll-reveal');
+                scrollElements.forEach((el, index) => {
+                    el.classList.remove('revealed');
+                    setTimeout(() => {
+                        el.classList.add('revealed');
+                    }, index * 100 + 200);
+                });
+            }, 200);
+
+            const selectedButton = document.querySelector('.tab-button:nth-child(' + summaryNumber + ')');
+            selectedButton.classList.add('active');
+
+            const tabsContainer = document.getElementById('tabsContainer');
+            const mobileToggle = document.getElementById('mobileMenuToggle');
+            if (tabsContainer.classList.contains('mobile-open')) {
+                tabsContainer.classList.remove('mobile-open');
+                mobileToggle.querySelector('i').className = 'fas fa-bars';
+            }
+
+            currentSection = summaryNumber;
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentSection > 1) {
+                showSummary(currentSection - 1);
+            } else if (e.key === 'ArrowRight' && currentSection < 9) {
+                showSummary(currentSection + 1);
+            }
+        });
+
+        let konamiCode = [];
+        const konami = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.keyCode);
+            if (konamiCode.length > konami.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.length === konami.length && 
+                konamiCode.every((key, index) => key === konami[index])) {
+                document.body.style.animation = 'rainbow 2s infinite';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 10000);
+            }
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rainbow {
+                0% { filter: hue-rotate(0deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        </script>
+        <script>
+            // Variables globales para los gráficos
+            let distributionChart = null;
+            let currentDistribution = 'chi2';
+
+            // Inicializar gráficos cuando se carga la página
+            window.addEventListener('load', function() {
+                setTimeout(() => {
+                    initializeCharts();
+                }, 1500);
+            });
+
+            function initializeCharts() {
+                // Configuración base para todos los gráficos con colores dinámicos
+                const textColor = isDarkMode ? '#e2e8f0' : '#1e293b';
+                Chart.defaults.font.family = "'Inter', sans-serif";
+                Chart.defaults.color = textColor;
+                
+                createDistributionChart();
+                
+                // Aplicar tema después de crear los gráficos
+                setTimeout(() => {
+                    updateChartsTheme();
+                }, 100);
+            }
+
+            function createDistributionChart() {
+                const ctx = document.getElementById('distributionChart').getContext('2d');
+                const textColor = isDarkMode ? '#e2e8f0' : '#1e293b';
+                const gridColor = isDarkMode ? 'rgba(226, 232, 240, 0.2)' : 'rgba(0, 0, 0, 0.1)';
+                
+                distributionChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: []
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
+                        // Pegá esto en tu función createDistributionChart(), dentro de las options, en la sección plugins:
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 8, // Reducido de 10 a 8
+                                    color: textColor
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Distribución Chi-cuadrado',
+                                font: {
+                                    size: 15, // Reducido de 16 a 15
+                                    weight: 'bold'
+                                },
+                                padding: {
+                                    top: 5,
+                                    bottom: 10
+                                }, // Padding más específico
+                                color: textColor
+                            },
+                            tooltip: {
+                                backgroundColor: isDarkMode ? 'rgba(30, 41, 59, 0.95)' : 'rgba(0, 0, 0, 0.8)',
+                                titleColor: 'white',
+                                bodyColor: 'white',
+                                borderColor: '#3b82f6',
+                                borderWidth: 1
+                            },
+                        },
+                        layout: {
+                            padding: {
+                                top: 5,
+                                bottom: 5,
+                                left: 5,
+                                right: 5
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Valor',
+                                    font: {
+                                        size: 12,
+                                        weight: 'bold'
+                                    },
+                                    color: textColor
+                                },
+                                ticks: {
+                                    color: textColor
+                                },
+                                grid: {
+                                    color: gridColor
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Densidad de probabilidad',
+                                    font: {
+                                        size: 12,
+                                        weight: 'bold'
+                                    },
+                                    color: textColor
+                                },
+                                ticks: {
+                                    color: textColor
+                                },
+                                grid: {
+                                    color: gridColor
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                
+                updateChi2Chart();
+            }
+
+            function showDistribution(type) {
+                currentDistribution = type;
+                
+                // Actualizar botones activos
+                document.querySelectorAll('#btn-chi2, #btn-t, #btn-f').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById(`btn-${type}`).classList.add('active');
+                
+                // Mostrar/ocultar controles
+                document.getElementById('chi2-controls').style.display = type === 'chi2' ? 'flex' : 'none';
+                document.getElementById('t-controls').style.display = type === 't' ? 'flex' : 'none';
+                document.getElementById('f-controls').style.display = type === 'f' ? 'flex' : 'none';
+                
+                // Limpiar el gráfico antes de actualizar
+                distributionChart.data.datasets = [];
+                distributionChart.update();
+                
+                // Actualizar gráfico según el tipo
+                if (type === 'chi2') {
+                    updateChi2Chart();
+                } else if (type === 't') {
+                    updateTChart();
+                } else if (type === 'f') {
+                    updateFChart();
+                }
+            }
+
+            function updateChi2Chart() {
+                const gl = parseInt(document.getElementById('chi2-gl').value);
+                document.getElementById('chi2-gl-value').textContent = gl;
+                
+                const x = [];
+                const y = [];
+                
+                for (let i = 0.1; i <= 25; i += 0.2) {
+                    x.push(i.toFixed(1));
+                    y.push(chi2PDF(i, gl));
+                }
+                
+                // Limpiar y establecer nuevo dataset
+                distributionChart.data.labels = x;
+                distributionChart.data.datasets = [{
+                    label: `χ² (gl=${gl})`,
+                    data: y,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0,
+                    borderWidth: 2
+                }];
+                
+                distributionChart.options.plugins.title.text = `Distribución Chi-cuadrado (gl=${gl})`;
+                distributionChart.options.scales.x.title.text = 'Valor χ²';
+                distributionChart.options.scales.y.title.text = 'Densidad de probabilidad';
+                distributionChart.update();
+            }
+
+            function updateTChart() {
+                const gl = parseInt(document.getElementById('t-gl').value);
+                document.getElementById('t-gl-value').textContent = gl;
+                
+                const x = [];
+                const y = [];
+                const yNormal = [];
+                
+                for (let i = -4; i <= 4; i += 0.1) {
+                    x.push(i.toFixed(1));
+                    y.push(tPDF(i, gl));
+                    yNormal.push(normalPDF(i));
+                }
+                
+                // Limpiar y establecer nuevos datasets
+                distributionChart.data.labels = x;
+                distributionChart.data.datasets = [
+                    {
+                        label: `t de Student (gl=${gl})`,
+                        data: y,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        borderWidth: 3
+                    },
+                    {
+                        label: 'Normal Estándar (Z)',
+                        data: yNormal,
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        borderWidth: 2,
+                        borderDash: [5, 5]
+                    }
+                ];
+                
+                distributionChart.options.plugins.title.text = `t de Student vs Normal Estándar (gl=${gl})`;
+                distributionChart.options.scales.x.title.text = 'Valor t / Z';
+                distributionChart.options.scales.y.title.text = 'Densidad de probabilidad';
+                distributionChart.update();
+            }
+
+            function updateFChart() {
+                const gl1 = parseInt(document.getElementById('f-gl1').value);
+                const gl2 = parseInt(document.getElementById('f-gl2').value);
+                document.getElementById('f-gl1-value').textContent = gl1;
+                document.getElementById('f-gl2-value').textContent = gl2;
+                
+                const x = [];
+                const y = [];
+                
+                for (let i = 0.1; i <= 6; i += 0.1) {
+                    x.push(i.toFixed(1));
+                    y.push(fPDF(i, gl1, gl2));
+                }
+                
+                // Limpiar y establecer nuevo dataset
+                distributionChart.data.labels = x;
+                distributionChart.data.datasets = [{
+                    label: `F de Snedecor (gl₁=${gl1}, gl₂=${gl2})`,
+                    data: y,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0,
+                    borderWidth: 2
+                }];
+                
+                distributionChart.options.plugins.title.text = `Distribución F de Snedecor (gl₁=${gl1}, gl₂=${gl2})`;
+                distributionChart.options.scales.x.title.text = 'Valor F';
+                distributionChart.options.scales.y.title.text = 'Densidad de probabilidad';
+                distributionChart.update();
+            }
+
+            // Funciones matemáticas simplificadas
+            function tPDF(x, gl) {
+                const numerator = gamma((gl + 1) / 2);
+                const denominator = Math.sqrt(gl * Math.PI) * gamma(gl / 2);
+                const fraction = numerator / denominator;
+                return fraction * Math.pow(1 + (x * x) / gl, -(gl + 1) / 2);
+            }
+
+            function normalPDF(x) {
+                return (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x);
+            }
+
+            function chi2PDF(x, gl) {
+                if (x <= 0) return 0;
+                const numerator = Math.pow(x, gl/2 - 1) * Math.exp(-x/2);
+                const denominator = Math.pow(2, gl/2) * gamma(gl/2);
+                return numerator / denominator;
+            }
+
+            function fPDF(x, gl1, gl2) {
+                if (x <= 0) return 0;
+                const numerator = gamma((gl1 + gl2) / 2) * Math.pow(gl1/gl2, gl1/2) * Math.pow(x, gl1/2 - 1);
+                const denominator = gamma(gl1/2) * gamma(gl2/2) * Math.pow(1 + (gl1/gl2) * x, (gl1 + gl2) / 2);
+                return numerator / denominator;
+            }
+
+            function gamma(z) {
+                // Aproximación de Stirling para la función gamma
+                if (z < 0.5) return Math.PI / (Math.sin(Math.PI * z) * gamma(1 - z));
+                z -= 1;
+                let x = 0.99999999999999709182;
+                const g = 7;
+                const C = [0.99999999999999709182, 57.156235665862923517, -59.597960355475491248,
+                        14.136097974741747174, -0.49191381609762019978, 0.33994649984811888699e-4,
+                        0.46523628927048575665e-4, -0.98374475304879564677e-4, 0.15808870322491248884e-3];
+                for (let i = 1; i < g + 2; i++) x += C[i] / (z + i);
+                const t = z + g + 0.5;
+                return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
+            }
+
+
+        </script>
+
+</body>
+</html>
