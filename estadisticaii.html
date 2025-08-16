@@ -309,25 +309,47 @@
         }
 
         /* Hamburger menu for mobile */
+        .mobile-menu-container {
+            display: none; /* Oculto en escritorio */
+        }
+
         .mobile-menu-toggle {
-            display: none;
-            background: var(--accent-gradient);
+            display: flex; /* Usamos flex para alinear ícono y texto */
+            align-items: center;
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: white;
             border: none;
             border-radius: 12px;
-            padding: 10px 15px;
-            color: white;
-            font-size: 1.2rem;
             cursor: pointer;
-            margin: 15px 20px 0;
-            width: calc(100% - 40px);
             text-align: left;
+            transition: background-color 0.2s ease;
         }
         
         .mobile-menu-toggle i {
-            margin-right: 10px;
+            margin-right: 12px;
             width: 20px;
             text-align: center;
+            font-size: 1.1rem;
         }
+
+        /* --- ESTILOS DENTRO DE LA MEDIA QUERY PARA MÓVIL --- */
+        @media (max-width: 768px) {
+            .mobile-menu-container {
+                display: block; /* Se hace visible en móvil */
+                background-color: var(--bg-secondary);
+                padding: 15px 20px;
+            }
+
+            .mobile-menu-toggle {
+                background-color: var(--primary-light); /* El azul que querías */
+            }
+
+            .mobile-menu-toggle:hover {
+                background-color: #2563eb; /* Un azul un poco más oscuro al pasar el mouse */
+            }
 
         main {
             padding: 40px 30px;
@@ -1222,9 +1244,11 @@
             <h1>SuperResúmenes Paso a Paso - Estadística II</h1>
         </header>
 
-        <button class="mobile-menu-toggle" id="mobileMenuToggle">
-            <i class="fas fa-bars"></i> Ver todos los SuperResúmenes
-        </button>
+        <div class="mobile-menu-container">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i> Ver todos los SuperResúmenes
+            </button>
+        </div>
 
         <nav class="tabs" id="tabsContainer">
             <button class="tab-button active" onclick="showSummary(1)">Resumen 1</button>
@@ -2086,6 +2110,7 @@
 </body>
 
 </html>
+
 
 
 
