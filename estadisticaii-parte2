@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUPER RESUMEN - PARTE 2 - Estadística II</title>
+    <script src="https://kit.fontawesome.com/6e3e233844.js" crossorigin="anonymous"></script>
+    <!-- Configuración ANTES del script -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\\[','\\]']]
+        },
+        chtml: { 
+            fontCache: 'global',
+            scale: 1.3  // Hace las fórmulas 30% más grandes
+        }  // usamos el renderer CHTML
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary-color: #64748b;
+            --accent-color: #06b6d4;
+            --accent-light: #0891b2;
+            --accent-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --bg-color: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --success-color: #10b981;
+            --warning-color: #ef4444;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        .intro-highlight {
+            background: linear-gradient(90deg, #60a5fa, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+            animation: pulseHighlight 4s infinite;
+        }
+
+        @keyframes pulseHighlight {
+            0%, 100% { text-shadow: 0 0 2px rgba(59, 130, 246, 0.3); }
+            50% { text-shadow: 0 0 6px rgba(6, 182, 212, 0.4); }
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #f8fafc;
+            --primary-light: #e2e8f0;
+            --text-color: #e2e8f0;
+            --text-light: #94a3b8;
+            --bg-color: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --border-color: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #bae6fd 0%, #3b82f6 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y pinch-zoom;
+            overscroll-behavior: contain;
+        }
+
+        ul {
+            margin: 16px 0;
+            padding-left: 20px;
+        }
+
+        /* --- Estilos para la Sección de Testimonios --- */
+        .testimonials-section {
+            margin-top: 40px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .testimonial-card {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .testimonial-card h4 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .testimonial-card p {
+            flex-grow: 1; /* Empuja el autor y el botón hacia abajo */
+            font-style: italic;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .testimonial-card .author {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 16px;
+            text-align: right;
+        }
+
+        .view-original-btn {
+            display: inline-block;
+            text-align: center;
+            padding: 8px 12px;
+            background: none;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .view-original-btn:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* --- Estilos para el Modal (Ventana Emergente) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            display: none; /* Oculto por defecto */
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.2);
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text-color);
+            line-height: 1.6;
+            position: relative;
+            animation: fadeInLeft 0.6s ease-out;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent-gradient);
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        [data-theme="dark"] .container {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .theme-toggle:active { transform: scale(0.95); }
+
+        header {
+            background: var(--accent-gradient);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 1px, rgba(255, 255, 255, 0.05) 1px, rgba(255, 255, 255, 0.05) 2px);
+        }
+
+        header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.025em;
+            position: relative;
+            z-index: 1;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
+            to { text-shadow: 0 2px 20px rgba(255, 255, 255, 0.3); }
+        }
+
+        header .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        main {
+            padding: 40px 30px;
+            position: relative;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 4px solid var(--accent-color);
+            position: relative;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+            animation: expandHeight 0.8s ease-out 0.1s both;
+        }
+
+        @keyframes expandHeight {
+            from { transform: scaleY(0); transform-origin: top; }
+            to { transform: scaleY(1); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h3 {
+            color: var(--primary-light);
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin: 15px 0 15px;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        p {
+            color: var(--text-color);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        .receta-paso, .checklist-item, .error-item {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
+            padding: 24px;
+            margin-bottom: 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.1s ease;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .receta-paso::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            animation: expandWidth 0.6s ease-out 0.3s both;
+        }
+
+        @keyframes expandWidth { to { transform: scaleX(1); } }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px) rotateX(-10deg); }
+            to { opacity: 1; transform: translateY(0) rotateX(0); }
+        }
+
+        .receta-paso:hover, .checklist-item:hover {
+            transform: translateY(-4px) rotateX(2deg);
+            box-shadow: var(--shadow-lg);
+            border-left-color: var(--accent-light);
+        }
+
+        .receta-paso strong {
+            color: var(--primary-color);
+            display: inline;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .recipe-step {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
+            padding: 24px;
+            margin-bottom: 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.1s ease;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .recipe-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            animation: expandWidth 0.6s ease-out 0.3s both;
+        }
+
+        @keyframes expandWidth { to { transform: scaleX(1); } }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px) rotateX(-10deg); }
+            to { opacity: 1; transform: translateY(0) rotateX(0); }
+        }
+
+        .recipe-step:hover {
+            transform: translateY(-4px) rotateX(2deg);
+            box-shadow: var(--shadow-lg);
+            border-left-color: var(--accent-light);
+        }
+
+        .recipe-step .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-gradient);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .recipe-step .step-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .recipe-step .step-content {
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        .recipe-step .step-example {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px dashed var(--primary-light);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            font-style: italic;
+            color: var(--primary-light);
+        }
+
+        [data-theme="dark"] .recipe-step .step-example {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .tool-selector {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-selector::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+
+        .tool-option {
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tool-option:hover {
+            border-color: var(--accent-color);
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .tool-chi {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border-left: 4px solid #ef4444;
+        }
+
+        .tool-t {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .tool-f {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border-left: 4px solid #10b981;
+        }
+
+        .degrees-formula {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            padding: 20px;
+            border-radius: 16px;
+            margin: 20px 0;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+
+        .degrees-formula .formula {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .call-to-action {
+            text-align: left;
+            padding: 50px 40px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 51, 234, 0.05) 100%);
+            border: 2px dashed var(--accent-color);
+            border-radius: 20px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(11, 151, 245, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(11, 245, 245, 0.4); }
+        }
+
+        .call-to-action::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(14, 6, 82, 0.02) 10px, rgba(245, 158, 11, 0.02) 20px);
+            animation: float 100s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+        }
+
+        .call-to-action h2 {
+            border: none;
+            padding: 0;
+            color: var(--primary-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .call-to-action p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-features-list {
+            list-style: none;
+            padding: 0;
+            margin: 25px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-features-list li {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .cta-features-list li i {
+            color: var(--accent-color);
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            border: none;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .whatsapp-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #128C7E 0%, #25D366 100%);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-4px) rotateX(5deg) scale(1.05);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-button:active { transform: translateY(-2px) scale(0.98); }
+        .whatsapp-button:hover::before { left: 0; }
+
+        .whatsapp-button i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-3px); }
+            60% { transform: translateY(-2px); }
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { border-radius: 16px; }
+            .theme-toggle {
+                top: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+            header {
+                padding: 30px 20px;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            main {
+                padding: 30px 20px;
+            }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.2rem; }
+            .recipe-step {
+                padding: 20px;
+            }
+            .recipe-step .step-number {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            .call-to-action {
+                padding: 40px 20px;
+            }
+            .whatsapp-button {
+                padding: 14px 24px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+        <header>
+            <h1>La Receta Paso a Paso</h1>
+            <div class="subtitle">Tu método infalible para resolver cualquier problema de Estadística II</div>
+        </header>
+
+        <main>
+            <h2>🍳 La Receta Definitiva</h2>
+            <p>Ya conocés las <strong class="intro-highlight">3 herramientas</strong> (Chi-cuadrado, t de Student y F de Snedecor).</p>
+            <p>Ahora viene lo importante: <strong class="intro-highlight">¿cómo saber cuál usar?</strong></p>
+            <p>Esta es tu <strong>receta de 5 pasos</strong> que funciona para <em>cualquier</em> problema:</p>
+
+            <div class="recipe-step scroll-reveal" style="--animation-order: 1">
+                <div class="step-title">
+                    <div class="step-number">1</div>
+                    Identificar la Misión
+                </div>
+                <div class="step-content">
+                    <p>Antes que nada: <strong>¿qué te pide exactamente el problema?</strong></p>
+                    <p>🎯 <strong>¿Calcular una probabilidad?</strong> → Buscás un área bajo la curva</p>
+                    <p>🎯 <strong>¿Encontrar un valor crítico?</strong> → Buscás un punto específico en el eje x</p>
+                    <div class="step-example">
+                        <strong>Ejemplo:</strong> "¿Cuál es la probabilidad de que la varianza sea mayor a 5?" → Misión = calcular probabilidad
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-step scroll-reveal" style="--animation-order: 2">
+                <div class="step-title">
+                    <div class="step-number">2</div>
+                    Elegir la Herramienta Correcta
+                </div>
+                <div class="step-content">
+                    <p>Leé el problema y identificá de qué habla:</p>
+                    
+                    <div class="tool-selector">
+                        <div class="tool-option tool-chi">
+                            <strong style="color: #dc2626;">🔴 Chi-cuadrado (χ²)</strong><br>
+                            ¿El problema habla de la <strong>varianza de UNA población?</strong><br>
+                            <em>Palabras clave: variabilidad, dispersión, "qué tan consistente"</em>
+                        </div>
+                        
+                        <div class="tool-option tool-t">
+                            <strong style="color: #2563eb;">🔵 t de Student</strong><br>
+                            ¿El problema habla de la <strong>media de UNA población</strong> con varianza desconocida y muestra pequeña?<br>
+                            <em>Palabras clave: promedio, tiempo medio, "en promedio"</em>
+                        </div>
+                        
+                        <div class="tool-option tool-f">
+                            <strong style="color: #059669;">🟢 F de Snedecor</strong><br>
+                            ¿El problema habla de <strong>comparar las varianzas de DOS poblaciones?</strong><br>
+                            <em>Palabras clave: "más consistente", "cuál varía más", comparar dos grupos</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-step scroll-reveal" style="--animation-order: 3">
+                <div class="step-title">
+                    <div class="step-number">3</div>
+                    Calcular los Grados de Libertad (gl)
+                </div>
+                <div class="step-content">
+                    <p>Este es el <strong class="intro-highlight">dato más importante</strong> de todo el problema.</p>
+                    
+                    <div class="degrees-formula">
+                        <p><strong>Para χ² y t de Student:</strong></p>
+                        <div class="formula">gl = n - 1</div>
+                        <p style="font-size: 0.9rem; color: var(--text-light);">(donde n es el tamaño de la muestra)</p>
+                    </div>
+                    
+                    <div class="degrees-formula">
+                        <p><strong>Para F de Snedecor:</strong></p>
+                        <div class="formula">gl₁ = n₁ - 1 &nbsp;&nbsp;&nbsp; gl₂ = n₂ - 1</div>
+                        <p style="font-size: 0.9rem; color: var(--text-light);">(numerador y denominador respectivamente)</p>
+                    </div>
+                    
+                    <div class="step-example">
+                        <strong>Ejemplo:</strong> Si tenés una muestra de 25 estudiantes → gl = 25 - 1 = 24
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-step scroll-reveal" style="--animation-order: 4">
+                <div class="step-title">
+                    <div class="step-number">4</div>
+                    Ejecutar el Plan
+                </div>
+                <div class="step-content">
+                    <p>Ya tenés todo definido:</p>
+                    <p>✅ La distribución a usar (χ², t o F)</p>
+                    <p>✅ Los grados de libertad</p>
+                    <p>✅ Lo que buscás (probabilidad o valor crítico)</p>
+                    
+                    <p><strong>Ahora:</strong></p>
+                    <p>🔹 Usá la <strong>tabla estadística</strong> correspondiente</p>
+                    <p>🔹 O mejor aún: usá <strong>InfoStat</strong> o cualquier software estadístico</p>
+                    <p>🔹 Insertá tus datos y listo</p>
+                    
+                    <div class="step-example">
+                        <strong>Tip Pro:</strong> En InfoStat → Estadísticas → Tablas de distribuciones → Elegí tu distribución y cargá los parámetros
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-step scroll-reveal" style="--animation-order: 5">
+                <div class="step-title">
+                    <div class="step-number">5</div>
+                    Traducir el Resultado
+                </div>
+                <div class="step-content">
+                    <p><strong class="intro-highlight">¡MUY IMPORTANTE!</strong></p>
+                    <p>No dejes solo el número. Siempre explicá qué significa en el <strong>contexto del problema</strong>:</p>
+                    
+                    <p>❌ <strong>MAL:</strong> "El resultado es 0.025"</p>
+                    <p>✅ <strong>BIEN:</strong> "La probabilidad de que la máquina tenga esa variabilidad es del 2.5%, lo cual es muy bajo y sugiere que se descalibró"</p>
+                    
+                    <p><strong>Frases que siempre funcionan:</strong></p>
+                    <p>🔹 "La probabilidad de que..." (para probabilidades)</p>
+                    <p>🔹 "El valor crítico es..." (para valores críticos)</p>
+                    <p>🔹 "Esto significa que..." (para interpretar)</p>
+                    
+                    <div class="step-example">
+                        <strong>Ejemplo completo:</strong> "El valor crítico es 15.51. Esto significa que si nuestra Chi-cuadrado calculada supera este valor, rechazamos la hipótesis de que la varianza es la esperada."
+                    </div>
+                </div>
+            </div>
+
+                <div class="call-to-action">
+                    <h2>🔥 ¿QUERÉS DOMINAR ESTA RECETA?</h2>
+                    <p>Esta receta es <strong>oro puro</strong>. Pero saber la receta no es lo mismo que saber cocinar.</p>
+                    <p>En la <strong>Academia Paso a Paso</strong> no solo te damos la receta: te enseñamos a aplicarla en cada tipo de ejercicio hasta que salga automático.</p>
+                    
+                    <ul style="text-align: left; margin: 20px 0; list-style: none; padding: 0;">
+                        <li style="margin-bottom: 10px;"><i class="fas fa-video" style="color: #3b82f6; margin-right: 10px;"></i> <strong>Clases paso a paso</strong> de TODOS los temas</li>
+                        <li style="margin-bottom: 10px;"><i class="fab fa-whatsapp" style="color: #25D366; margin-right: 10px;"></i> <strong>WhatsApp 24/7</strong> para consultas</li>
+                        <li style="margin-bottom: 10px;"><i class="fas fa-chalkboard-teacher" style="color: #8b5cf6; margin-right: 10px;"></i> <strong>Consultas presenciales</strong> cara a cara</li>
+                        <li style="margin-bottom: 10px;"><i class="fas fa-award" style="color: #f59e0b; margin-right: 10px;"></i> <strong>Simulacros reales</strong> con correcciones</li>
+                        <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 10px;"></i> <strong>Garantía de Aprobado</strong></li>
+                    </ul>
+                    
+                    <div id="contador2" style="font-size: 1.2em; color: rgb(228, 76, 76); font-weight: bold; margin: 15px 0;">
+                        Subiremos el precio de inscripción en: <span id="tiempo-restante2"></span>
+                    </div>
+                    
+                    <a href="https://wa.me/5493541315608?text=Quiero%20Aprobar%20Estadistica%20II!%20Denme%20m%C3%A1s%20info" class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i> ¡Quiero Dominar la Receta!
+                    </a>
+                </div>
+            
+                <div class="receta-paso" style="border-left-color: #ffc107; margin-top: 40px;">
+                    <h3 style="color: #f59e0b;">🏆 TIPS DE ORO</h3>
+                    <ul>
+                        <li><strong>🎯 Antes de calcular:</strong> Siempre identificá primero QUÉ te están pidiendo y si es media o varianza, una o dos poblaciones, y si conocés σ</li>
+                        <li><strong>📝 Hoja de fórmulas:</strong> Armá una con χ², t y F; recordá las "palabras mágicas" (Varianza → χ²/F, Media → t, Comparar grupos → F)</li>
+                        <li><strong>⏰ Practica la receta:</strong> 5 ejercicios por día usando estos pasos hasta que sea automático</li>
+                        <li><strong>🤝 En grupo es mejor:</strong> Explicale la receta a un compañero. Si no podés explicarla, no la entendiste</li>
+                        <li><strong>💻 InfoStat es tu amigo:</strong> Aprendé a usarlo YA. Te va a ahorrar tiempo y errores de cálculo</li>
+                        <li><strong>🖊️ Visualizá mentalmente:</strong> Imaginá la curva y dónde está el área que buscás, te ayuda a no confundirte</li>
+                    </ul>
+                </div>
+            
+<!-- INICIO: Nueva Sección de Testimonios -->
+<div class="testimonials-section">
+    <h2>💬 Lo que dicen nuestros estudiantes</h2>
+        <div class="testimonials-grid">
+            
+            <div class="testimonial-card">
+                <h4>Aprobé! Las explicaciones son súper claras.</h4>
+                <p>"Posta explicas re bien, me super sirvió. Gracias por todo, la verdad que se aprecia mucho la ayuda."</p>
+                <div class="author">- Pili</div>
+                <a href="#" class="view-original-btn" data-image="captura-pili.png">Ver mensaje original</a>
+            </div>
+
+            <div class="testimonial-card">
+                <h4>Nos fue muy bien gracias a su ayuda.</h4>
+                <p>"Queríamos agradecerte con Jorge por cómo nos ayudaste en matemática. Nos fue muy bien posta y es gracias a eso. ¡Muchas gracias, amigo!"</p>
+                <div class="author">- Benja</div>
+                <a href="#" class="view-original-btn" data-image="captura-benja.png">Ver mensaje original</a>
+            </div>
+
+            <div class="testimonial-card">
+                <h4>Aprobé gracias a las clases, incluso con poco tiempo!</h4>
+                <p>"¡Sirvió! Muchas gracias por darme clases aunque estuviste medio ajustado de tiempo. ¡Excelente!"</p>
+                <div class="author">- Matías</div>
+                <a href="#" class="view-original-btn" data-image="captura-matias.png">Ver mensaje original</a>
+            </div>
+
+            <div class="testimonial-card">
+                <h4>ME SAQUÉ UN 9! El examen me pareció muy parecido.</h4>
+                <p>"Me entregaron la nota hace un ratito, ¡un 9 me saqué! La parte escrita fue muy parecida a uno de los exámenes que vimos, me ayudó un montón."</p>
+                <div class="author">- Justina</div>
+                <a href="#" class="view-original-btn" data-image="captura-justina.png">Ver mensaje original</a>
+            </div>
+
+            <div class="testimonial-card">
+                <h4>Aprobé el recuperatorio con un 6!</h4>
+                <p>"Holaa, aprobé el recuuu con un 6! Fue una genialidad contar con su apoyo para prepararme."</p>
+                <div class="author">- Sofi</div>
+                <a href="#" class="view-original-btn" data-image="captura-sofi.png">Ver mensaje original</a>
+            </div>
+
+            <div class="testimonial-card">
+                <h4>Aprobé, y no fue tan difícil como pensaba!</h4>
+                <p>"Aprobé jeje. La verdad es que no estuvo difícil"</p>
+                <div class="author">- Morana</div>
+                <a href="#" class="view-original-btn" data-image="captura-morana.png">Ver mensaje original</a>
+            </div>
+
+        </div>
+    </div>
+    <!-- FIN: Nueva Sección de Testimonios -->
+
+    <!-- Estructura del Modal (Ventana emergente) -->
+    <div id="testimonialModal" class="modal-overlay">
+        <span class="modal-close">&times;</span>
+        <img class="modal-image" src="" alt="Captura del testimonio original">
+    </div>
+            
+                <script>
+                    function actualizarContador2() {
+                        const fin = new Date("2025-08-21T19:00:00").getTime();
+                        const ahora = new Date().getTime();
+                        const diferencia = fin - ahora;
+                        
+                        if (diferencia <= 0) {
+                            document.getElementById("tiempo-restante2").innerHTML = "¡La oferta terminó! Consultanos si queda lugar!!";
+                            return;
+                        }
+                        
+                        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+                        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+                        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+                        
+                        document.getElementById("tiempo-restante2").innerHTML =
+                        `${dias} días ${horas} horas ${minutos} mins ${segundos} segs`;
+                    }
+                    
+                    setInterval(actualizarContador2, 1000);
+                    actualizarContador2();
+                </script>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            setupThemeToggle();
+            setupScrollAnimations();
+            setupReadingProgress();
+            revealOnScroll();
+        }
+
+        function setupThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            let isDarkMode = false;
+            
+            function toggleTheme() {
+                isDarkMode = !isDarkMode;
+                body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+                themeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                themeToggle.title = isDarkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+                localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            }
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                isDarkMode = savedTheme === 'dark';
+                if (isDarkMode) {
+                    body.setAttribute('data-theme', 'dark');
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                toggleTheme();
+            }
+
+            themeToggle.addEventListener('click', toggleTheme);
+        }
+
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+        }
+
+        function setupReadingProgress() {
+            const progressBar = document.getElementById('readingProgress');
+            let ticking = false;
+            
+            function updateProgress() {
+                const scrollTop = window.pageYOffset;
+                const docHeight = document.body.offsetHeight - window.innerHeight;
+                const scrollPercent = (scrollTop / docHeight) * 100;
+                progressBar.style.width = Math.min(scrollPercent, 100) + '%';
+                ticking = false;
+            }
+            
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(updateProgress);
+                    ticking = true;
+                }
+            }, { passive: true });
+        }
+
+        function revealOnScroll() {
+            const elements = document.querySelectorAll('.scroll-reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => entry.target.classList.add('revealed'), index * 100);
+                    }
+                });
+            });
+            elements.forEach(el => observer.observe(el));
+        }
+
+        // Contador regresivo
+        function actualizarContador() {
+            const fin = new Date("2025-08-21T19:00:00").getTime();
+            const ahora = new Date().getTime();
+            const diferencia = fin - ahora;
+            
+            if (diferencia <= 0) {
+                document.getElementById("tiempo-restante").innerHTML = "¡La oferta terminó! Consultanos si queda lugar antes de que se acaben!!";
+                return;
+            }
+            
+            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+            
+            document.getElementById("tiempo-restante").innerHTML =
+            `${dias} días ${horas} horas ${minutos} mins ${segundos} segs`;
+        }
+        
+        setInterval(actualizarContador, 1000);
+        actualizarContador();
+
+        // Efecto MathJax cuando esté disponible
+        if (window.MathJax) {
+            MathJax.typesetPromise();
+        }
+        function initializeApp() {
+            setupThemeToggle();
+            setupScrollAnimations();
+            setupReadingProgress();
+            // revealOnScroll(); <-- Esta línea ya la tienes, la dejo de referencia
+            setupTestimonialModal(); // <-- AGREGA ESTA LÍNEA
+        }
+        function setupTestimonialModal() {
+            const modal = document.getElementById('testimonialModal');
+            if (!modal) return; // Si el modal no existe, no hacer nada
+
+            const modalImage = modal.querySelector('.modal-image');
+            const closeButton = modal.querySelector('.modal-close');
+            const viewButtons = document.querySelectorAll('.view-original-btn');
+
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const imagePath = this.getAttribute('data-image');
+                    modalImage.src = imagePath;
+                    modal.classList.add('active');
+                });
+            });
+
+            function closeModal() {
+                modal.classList.remove('active');
+            }
+
+            closeButton.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', function(event) {
+                // Cierra el modal solo si se hace clic en el fondo (overlay)
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
