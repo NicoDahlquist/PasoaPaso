@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUPER RESUMEN - De la Receta a la Realidad - Estadística II</title>
+    <script src="https://kit.fontawesome.com/6e3e233844.js" crossorigin="anonymous"></script>
+    <!-- Configuración ANTES del script -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\\[','\\]']]
+        },
+        chtml: { 
+            fontCache: 'global',
+            scale: 1.3  // Hace las fórmulas 30% más grandes
+        }  // usamos el renderer CHTML
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary-color: #64748b;
+            --accent-color: #06b6d4;
+            --accent-light: #0891b2;
+            --accent-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --bg-color: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --success-color: #10b981;
+            --warning-color: #ef4444;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        .intro-highlight {
+            background: linear-gradient(90deg, #60a5fa, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+            animation: pulseHighlight 4s infinite;
+        }
+
+        @keyframes pulseHighlight {
+            0%, 100% { text-shadow: 0 0 2px rgba(59, 130, 246, 0.3); }
+            50% { text-shadow: 0 0 6px rgba(6, 182, 212, 0.4); }
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #f8fafc;
+            --primary-light: #e2e8f0;
+            --text-color: #e2e8f0;
+            --text-light: #94a3b8;
+            --bg-color: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --border-color: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #bae6fd 0%, #3b82f6 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        [data-theme="dark"] .container {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        header {
+            background: var(--accent-gradient);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        header .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        main {
+            padding: 40px 30px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 20px;
+        }
+
+        h3 {
+            color: var(--primary-light);
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin: 25px 0 15px;
+        }
+
+        p {
+            color: var(--text-color);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        .receta-paso, .error-item {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
+            padding: 24px;
+            margin-bottom: 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .receta-paso:hover, .error-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .receta-paso strong {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .error-item {
+            border-left-color: var(--warning-color);
+        }
+
+        .error-item strong {
+            color: var(--warning-color);
+        }
+
+        .sense-check {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px dashed var(--success-color);
+            border-left: 4px solid var(--success-color);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #047857;
+        }
+        [data-theme="dark"] .sense-check {
+            color: #a7f3d0;
+        }
+        .sense-check strong {
+            color: var(--success-color);
+        }
+
+        details {
+            background: rgba(0,0,0,0.02);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-top: 10px;
+            padding: 10px 15px;
+        }
+        summary {
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--primary-light);
+        }
+
+        .testimonial-flash {
+            background: linear-gradient(135deg, rgba(245, 159, 11, 0.1), rgba(253, 224, 71, 0.1));
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 16px;
+            margin: 40px 0 20px 0;
+            font-style: italic;
+        }
+        .testimonial-flash p { margin: 0; }
+        .testimonial-flash .author {
+            text-align: right;
+            font-weight: 600;
+            margin-top: 10px;
+            color: var(--text-color);
+        }
+
+        .call-to-action {
+            text-align: left;
+            padding: 50px 40px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 51, 234, 0.05) 100%);
+            border: 2px dashed var(--accent-color);
+            border-radius: 20px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .call-to-action h2 {
+            border: none;
+            padding: 0;
+            color: var(--primary-color);
+        }
+
+        .cta-features-list {
+            list-style: none;
+            padding: 0;
+            margin: 25px 0;
+        }
+
+        .cta-features-list li {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .cta-features-list li i {
+            color: var(--accent-color);
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-button i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .testimonials-section { margin-top: 40px; }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        .testimonial-card {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        .testimonial-card h4 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+        .testimonial-card p {
+            flex-grow: 1;
+            font-style: italic;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+        .testimonial-card .author {
+            font-weight: 600;
+            color: var(--text-color);
+            text-align: right;
+        }
+        .view-original-btn {
+            display: inline-block;
+            text-align: center;
+            padding: 8px 12px;
+            background: none;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            margin-top: auto;
+        }
+        .view-original-btn:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: var(--shadow-xl);
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent-gradient);
+            z-index: 1001;
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { border-radius: 16px; }
+            .theme-toggle { top: 20px; right: 20px; width: 45px; height: 45px; }
+            header { padding: 30px 20px; }
+            header h1 { font-size: 2rem; }
+            main { padding: 30px 20px; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.2rem; }
+            .call-to-action { padding: 40px 20px; }
+            .whatsapp-button { padding: 14px 24px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <button class="theme-toggle" id="themeToggle" title="Cambiar a modo oscuro">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+        <header>
+            <h1>De la Receta a la Realidad</h1>
+            <div class="subtitle">Veamos cómo aplicar la receta en un ejercicio real y qué trampas evitar para no fallar en el examen.</div>
+        </header>
+
+        <main>
+            <h2 class="scroll-reveal">🔥 Ejemplo Resuelto Paso a Paso</h2>
+            <p class="scroll-reveal">Ya tenés la receta. Ahora, vamos a <strong class="intro-highlight">cocinar juntos</strong> para que veas cómo se usa y, más importante, cómo evitar quemarte en el parcial.</p>
+            <p class="scroll-reveal"><strong>El Problema:</strong> Queremos obtener la probabilidad de que una variable con distribución Chi-cuadrado, con 10 grados de libertad, asuma valores menores que 18,3.</p>
+
+            <div class="receta-paso scroll-reveal">
+                <strong>Paso 1 (Misión):</strong>
+                <p>Nos piden una probabilidad. Lo traducimos a lenguaje matemático: <strong>P(χ² < 18,3)</strong>. Buscamos el área a la izquierda de 18,3.</p>
+            </div>
+
+            <div class="receta-paso scroll-reveal">
+                <strong>Paso 2 (Herramienta):</strong>
+                <p>¡Fácil! El problema lo dice explícitamente: usaremos la distribución <strong>Chi-cuadrado (χ²)</strong>.</p>
+            </div>
+
+            <div class="receta-paso scroll-reveal">
+                <strong>Paso 3 (Grados de Libertad):</strong>
+                <p>El enunciado nos da el dato clave: <strong>gl = 10</strong>. En InfoStat, esto se pone en el campo "v".</p>
+                <p>⚠️ <strong>Ojo al piojo:</strong> En muchos problemas de varianza, los calculás como `gl = n - 1`. Pero esta fórmula no es universal, ¡cambia según el test! ¿Sabés cuándo es diferente? 😉</p>
+            </div>
+
+            <div class="receta-paso scroll-reveal">
+                <strong>Paso 4 (Ejecución):</strong>
+                <p>Ahora, a buscar el número. Tenés varias formas de hacerlo:</p>
+                <details>
+                    <summary>💻 Con InfoStat (Recomendado)</summary>
+                    <p style="margin-top:10px;">Andá a <strong>Estadísticas → Tablas de distribuciones</strong>. Elegí Chi-cuadrado, poné v=10 y x=18.3. Te dará la probabilidad acumulada a la izquierda al toque.</p>
+                </details>
+                <details>
+                    <summary>📊 Con Tablas (El método "old-school")</summary>
+                    <p style="margin-top:10px;">Buscá la tabla de Chi-cuadrado. Entrá por la fila de 10 grados de libertad y buscá el valor más cercano a 18,3 en el cuerpo de la tabla. Luego, mirá qué probabilidad (área) le corresponde en la primera fila. ¡Cuidado que muchas tablas muestran el área de la derecha!</p>
+                </details>
+                 <details>
+                    <summary>📈 Con Excel / Google Sheets (¡Muy útil!)</summary>
+                    <p style="margin-top:10px;">Usá la fórmula: `=DISTR.CHI2(18.3, 10, VERDADERO)`. El "VERDADERO" al final le dice que calcule la probabilidad acumulada.</p>
+                </details>
+            </div>
+
+            <div class="receta-paso scroll-reveal">
+                <strong>Paso 5 (Traducción):</strong>
+                <p>El resultado es <strong>0,9499</strong>. Pero no alcanza con poner el número.</p>
+                <p>✅ <strong>Respuesta correcta:</strong> "La probabilidad de que una variable Chi-cuadrado con 10 grados de libertad tome un valor menor a 18,3 es del 94.99%."</p>
+                
+                <div class="sense-check">
+                    <strong>✅ Chequeo de Sentido Rápido:</strong> ¿Tiene lógica un 95%? <strong>¡Sí!</strong> Un valor de 18,3 es bastante alto para esta distribución (la media es 10). Por lo tanto, es lógico que casi toda el área (el 95%) esté a su izquierda. Si te hubiera dado 0.15, sabrías al instante que algo hiciste mal. <strong>¡Este chequeo te salva en el parcial!</strong>
+                </div>
+            </div>
+
+            <h3 class="scroll-reveal">🤯 Errores Comunes que te Cuestan el Parcial</h3>
+            <p class="scroll-reveal">Saber la receta no evita que la comida se queme. Estos son los errores que vemos una y otra vez:</p>
+            
+            <div class="error-item scroll-reveal">
+                <strong>🤔 Confundir los grados de libertad:</strong> Es el error #1. Si calculás mal los `gl`, todo lo que sigue está mal. ¡Asegurate de saber qué fórmula usar en cada caso!
+            </div>
+            <div class="error-item scroll-reveal">
+                <strong>↔️ Asumir simetría donde no la hay:</strong> Chi-cuadrado y F son asimétricas. No podés tratar la cola izquierda y derecha como si fueran iguales (como en la Normal o t).
+            </div>
+            <div class="error-item scroll-reveal">
+                <strong>➡️⬅️ Leer mal la tabla:</strong> ¿La tabla te da el área de la cola derecha o la izquierda? Si necesitás una y la tabla te da la otra, tenés que hacer `1 - probabilidad`. ¡Un error clásico!
+            </div>
+            <div class="error-item scroll-reveal">
+                <strong>⚫️ Usar punto en vez de coma:</strong> InfoStat, Excel... cada software tiene su maña. Un simple error de separador decimal (`18.3` vs `18,3`) y te da error o un resultado sin sentido.
+            </div>
+            <div class="error-item scroll-reveal">
+                <strong>🔄 Invertir los parámetros en F:</strong> En la F de Snedecor, no es lo mismo `gl₁=10, gl₂=12` que `gl₁=12, gl₂=10`. Ponerlos al revés te garantiza un resultado incorrecto.
+            </div>
+
+            <div class="call-to-action scroll-reveal">
+                <h2>¿Y SI ESTE CUATRIMESTRE FUERA DIFERENTE?</h2>
+                <p>Resolver un ejercicio está bien. Pero <strong>dominar el método</strong> para resolver CUALQUIER ejercicio es lo que te garantiza aprobar sin sufrir.</p>
+                <p>En la <strong>Academia Paso a Paso</strong> te acompañamos desde el día 1 para que llegues al parcial con la materia al día y la confianza por las nubes. Olvidate de estudiar todo a último momento.</p>
+                
+                <ul class="cta-features-list">
+                    <li><i class="fas fa-video"></i> <strong>Clases paso a paso</strong> de TODOS los temas.</li>
+                    <li><i class="fab fa-whatsapp"></i> <strong>WhatsApp 24/7</strong> para consultas ilimitadas.</li>
+                    <li><i class="fas fa-chalkboard-teacher"></i> <strong>Consultas presenciales</strong> cara a cara.</li>
+                    <li><i class="fas fa-award"></i> <strong>Simulacros reales</strong> con correcciones para que sepas tu nota.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Garantía de Aprobado</strong>: te acompañamos hasta que lo logres.</li>
+                </ul>
+                
+                <div id="contador2" style="font-size: 1.2em; color: rgb(228, 76, 76); font-weight: bold; margin: 15px 0;">
+                    Las inscripciones cierran en: <span id="tiempo-restante2"></span>
+                </div>
+                
+                <a href="https://wa.me/5493541315608?text=Hola!%20Vi%20la%20p%C3%A1gina%20y%20quiero%20saber%20m%C3%A1s%20sobre%20c%C3%B3mo%20aprobar%20Estad%C3%ADstica%20II%20sin%20estr%C3%A9s." class="whatsapp-button" target="_blank">
+                    <i class="fab fa-whatsapp"></i> ¡Quiero Aprobar sin Estrés!
+                </a>
+            </div>
+
+            <div class="testimonial-flash scroll-reveal">
+                <p>"Me re confiaba con la receta, pero cuando me corrigieron en los simulacros me di cuenta de que estaba leyendo mal la tabla de la Chi-cuadrado xq usaba la cola derecha en vez de la izquierda. En el parcial, esa diferencia era un 2 o un 8. Gracias a la revisión, aprobé. El acompañamiento de la academia es clave, marca la diferencia"</p>
+                <div class="author">- Lucas, alumno de la Academia</div>
+            </div>
+        </div>
+            
+            <script>
+                function actualizarContador2() {
+                    const fin = new Date("2025-08-21T19:00:00").getTime();
+                    const ahora = new Date().getTime();
+                    const diferencia = fin - ahora;
+                    
+                    if (diferencia <= 0) {
+                        document.getElementById("tiempo-restante2").innerHTML = "¡La oferta terminó! Consultanos si queda lugar.";
+                        return;
+                    }
+                    
+                    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+                    const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+                    const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+                    
+                    document.getElementById("tiempo-restante2").innerHTML =
+                    `${dias}d ${horas}hs ${minutos}mins ${segundos}segs`;
+                }
+                
+                setInterval(actualizarContador2, 1000);
+                actualizarContador2();
+            </script>
+        </main>
+    </div>
+
+
+    <!-- Estructura del Modal (Ventana emergente) -->
+    <div id="testimonialModal" class="modal-overlay">
+        <span class="modal-close">&times;</span>
+        <img class="modal-image" src="" alt="Captura del testimonio original">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            setupThemeToggle();
+            setupScrollAnimations();
+            setupReadingProgress();
+            setupTestimonialModal();
+        }
+
+        function setupThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            // Función para aplicar el tema
+            const applyTheme = (theme) => {
+                body.setAttribute('data-theme', theme);
+                themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                themeToggle.title = theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+                localStorage.setItem('theme', theme);
+            };
+
+            // Cargar tema guardado o preferido
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else if (prefersDark) {
+                applyTheme('dark');
+            } else {
+                applyTheme('light');
+            }
+
+            // Evento de click
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = body.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(newTheme);
+            });
+        }
+
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        observer.unobserve(entry.target); // Opcional: deja de observar una vez revelado
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        function setupReadingProgress() {
+            const progressBar = document.getElementById('readingProgress');
+            if (!progressBar) return;
+
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollPercent = (scrollTop / docHeight) * 100;
+                progressBar.style.width = scrollPercent + '%';
+            }, { passive: true });
+        }
+
+        function setupTestimonialModal() {
+            const modal = document.getElementById('testimonialModal');
+            if (!modal) return;
+
+            const modalImage = modal.querySelector('.modal-image');
+            const closeButton = modal.querySelector('.modal-close');
+            const viewButtons = document.querySelectorAll('.view-original-btn');
+
+            const openModal = (imagePath) => {
+                if (imagePath) {
+                    modalImage.src = imagePath;
+                    modal.classList.add('active');
+                }
+            };
+
+            const closeModal = () => {
+                modal.classList.remove('active');
+            };
+
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const imagePath = this.getAttribute('data-image');
+                    openModal(imagePath);
+                });
+            });
+
+            closeButton.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
